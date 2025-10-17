@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\TagController;
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -14,6 +15,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('notes', NoteController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::resource('tags', TagController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

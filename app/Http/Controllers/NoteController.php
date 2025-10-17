@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Note;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,11 @@ class NoteController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $notes = $user->notes()->latest()->get();
-        return view('notes.create', ['notes' => $notes]);
+        $tags = Tag::all(); // Fetch all available tags
+        return view('notes.create', [
+            'notes' => $notes,
+            'tags' => $tags,
+        ]);
     }
 
     /**
@@ -48,6 +53,8 @@ class NoteController extends Controller
             'content' => 'nullable|string',
             'linked_notes' => 'nullable|array',
             'linked_notes.*' => 'integer|exists:notes,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
         ]);
 
         $note = $request->user()->notes()->create([
@@ -58,6 +65,10 @@ class NoteController extends Controller
 
         if (isset($validated['linked_notes'])) {
             $note->linkedNotes()->sync($validated['linked_notes']);
+        }
+
+        if (isset($validated['tags'])) {
+            $note->tags()->sync($validated['tags']);
         }
 
         return redirect()->route('notes.show', $note)->with('status', 'Note created successfully!');
@@ -84,11 +95,15 @@ class NoteController extends Controller
         $user = Auth::user();
         $allNotes = $user->notes()->where('id', '!=', $note->id)->latest()->get();
         $linkedNotes = $note->linkedNotes->pluck('id')->toArray();
+        $allTags = Tag::all(); // Fetch all available tags
+        $noteTags = $note->tags->pluck('id')->toArray(); // Get IDs of tags currently associated with the note
 
         return view('notes.edit', [
             'note' => $note,
             'allNotes' => $allNotes,
             'linkedNotes' => $linkedNotes,
+            'allTags' => $allTags,
+            'noteTags' => $noteTags,
         ]);
     }
 
@@ -104,6 +119,8 @@ class NoteController extends Controller
             'content' => 'nullable|string',
             'linked_notes' => 'nullable|array',
             'linked_notes.*' => 'integer|exists:notes,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
         ]);
 
         $note->update([
@@ -116,6 +133,12 @@ class NoteController extends Controller
             $note->linkedNotes()->sync($validated['linked_notes']);
         } else {
             $note->linkedNotes()->detach(); // If no linked_notes are provided, detach all existing links
+        }
+
+        if (isset($validated['tags'])) {
+            $note->tags()->sync($validated['tags']);
+        } else {
+            $note->tags()->detach(); // If no tags are provided, detach all existing tags
         }
 
         return redirect()->route('notes.show', $note)->with('status', 'Note updated successfully!');

@@ -40,6 +40,19 @@
                             <x-input-error :messages="$errors->get('linked_notes')" class="mt-2" />
                         </div>
 
+                        <!-- Tags -->
+                        <div class="mt-4">
+                            <x-input-label for="tags" :value="__('Tags')" />
+                            <select id="tags" name="tags[]" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" multiple>
+                                @foreach($allTags as $tagOption)
+                                    <option value="{{ $tagOption->id }}" @selected(in_array($tagOption->id, $noteTags))>
+                                        {{ $tagOption->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('tags')" class="mt-2" />
+                        </div>
+
                         <div class="flex items-center justify-end mt-4">
                             <x-primary-button class="ms-4">
                                 {{ __('Save Changes') }}
