@@ -14,14 +14,22 @@ class NoteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('viewAny', Note::class);
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $notes = $user->notes()->latest()->get();
-        return view('notes.index', ['notes' => $notes]);
+        $notes = $user->notes()->latest();
+
+        if ($search = $request->query('search')) {
+            $notes->where(function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%')
+                      ->orWhere('content', 'like', '%' . $search . '%');
+            });
+        }
+
+        return view('notes.index', ['notes' => $notes->get()]);
     }
 
     /**
@@ -85,7 +93,7 @@ class NoteController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified resource.  
      */
     public function edit(Note $note)
     {
