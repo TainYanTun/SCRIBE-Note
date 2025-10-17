@@ -12,7 +12,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/notes', [NoteController::class, 'index'])->middleware(['auth', 'verified'])->name('notes.index');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('notes', NoteController::class)->only(['index', 'create', 'store', 'show']);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
