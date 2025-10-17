@@ -6,6 +6,7 @@ use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class NoteController extends Controller
 {
@@ -14,6 +15,8 @@ class NoteController extends Controller
      */
     public function index()
     {
+        Gate::authorize('viewAny', Note::class);
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $notes = $user->notes()->latest()->get();
@@ -25,6 +28,8 @@ class NoteController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Note::class);
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $notes = $user->notes()->latest()->get();
@@ -36,6 +41,8 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('create', Note::class);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
@@ -61,6 +68,8 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
+        Gate::authorize('view', $note);
+
         return view('notes.show', ['note' => $note]);
     }
 
@@ -69,6 +78,8 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
+        Gate::authorize('update', $note);
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $allNotes = $user->notes()->where('id', '!=', $note->id)->latest()->get();
@@ -86,6 +97,8 @@ class NoteController extends Controller
      */
     public function update(Request $request, Note $note)
     {
+        Gate::authorize('update', $note);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
@@ -113,6 +126,8 @@ class NoteController extends Controller
      */
     public function destroy(Note $note)
     {
+        Gate::authorize('delete', $note);
+
         $note->delete();
 
         return redirect()->route('notes.index')->with('status', 'Note deleted successfully!');
