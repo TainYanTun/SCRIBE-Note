@@ -22,7 +22,13 @@
                                     {{ $note->title }}
                                 </a>
                             </h3>
-                            <p class="text-sm text-gray-600">{{ $note->content }}</p>
+                            <p class="text-sm text-gray-600">
+                                @php
+                                    $lines = explode("\n", $note->content);
+                                    $displayContent = implode("\n", array_slice($lines, 0, 1));
+                                @endphp
+                                {!! nl2br(e($displayContent)) !!}@if (count($lines) > 1)...@endif
+                            </p>
                             <p class="text-xs text-gray-500">Last updated: {{ $note->updated_at->diffForHumans() }}</p>
                         </div>
                     @empty

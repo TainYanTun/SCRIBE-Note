@@ -16,7 +16,7 @@
                         <!-- Title -->
                         <div>
                             <x-input-label for="title" :value="__('Title')" />
-                            <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title', $note->title)" required autofocus />
+                            <input id="title" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" type="text" name="title" value="{{ old('title', $note->title) }}" required autofocus />
                             <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
 

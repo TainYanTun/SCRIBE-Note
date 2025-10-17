@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h3 class="text-2xl font-bold mb-4">{{ $note->title }}</h3>
-                    <p class="text-gray-700 mb-4">{{ $note->content }}</p>
+                    <p class="text-gray-700 mb-4 break-words">{!! nl2br($note->content) !!}</p>
                     <p class="text-sm text-gray-500">Created: {{ $note->created_at->format('M d, Y H:i') }}</p>
                     <p class="text-sm text-gray-500">Last updated: {{ $note->updated_at->format('M d, Y H:i') }}</p>
 
