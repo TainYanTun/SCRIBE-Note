@@ -25,7 +25,10 @@ class NoteController extends Controller
      */
     public function create()
     {
-        return view('notes.create');
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $notes = $user->notes()->latest()->get();
+        return view('notes.create', ['notes' => $notes]);
     }
 
     /**
@@ -36,6 +39,8 @@ class NoteController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
+            'linked_notes' => 'nullable|array',
+            'linked_notes.*' => 'integer|exists:notes,id',
         ]);
 
         $note = $request->user()->notes()->create([
@@ -43,6 +48,10 @@ class NoteController extends Controller
             'slug' => Str::slug($validated['title']),
             'content' => $validated['content'] ?? '',
         ]);
+
+        if (isset($validated['linked_notes'])) {
+            $note->linkedNotes()->sync($validated['linked_notes']);
+        }
 
         return redirect()->route('notes.show', $note)->with('status', 'Note created successfully!');
     }
@@ -60,7 +69,16 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
-        return view('notes.edit', ['note' => $note]);
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $allNotes = $user->notes()->where('id', '!=', $note->id)->latest()->get();
+        $linkedNotes = $note->linkedNotes->pluck('id')->toArray();
+
+        return view('notes.edit', [
+            'note' => $note,
+            'allNotes' => $allNotes,
+            'linkedNotes' => $linkedNotes,
+        ]);
     }
 
     /**
@@ -71,6 +89,8 @@ class NoteController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',
+            'linked_notes' => 'nullable|array',
+            'linked_notes.*' => 'integer|exists:notes,id',
         ]);
 
         $note->update([
@@ -78,6 +98,12 @@ class NoteController extends Controller
             'slug' => Str::slug($validated['title']),
             'content' => $validated['content'] ?? '',
         ]);
+
+        if (isset($validated['linked_notes'])) {
+            $note->linkedNotes()->sync($validated['linked_notes']);
+        } else {
+            $note->linkedNotes()->detach(); // If no linked_notes are provided, detach all existing links
+        }
 
         return redirect()->route('notes.show', $note)->with('status', 'Note updated successfully!');
     }

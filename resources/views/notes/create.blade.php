@@ -26,6 +26,17 @@
                             <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
 
+                        <!-- Linked Notes -->
+                        <div class="mt-4">
+                            <x-input-label for="linked_notes" :value="__('Linked Notes')" />
+                            <select id="linked_notes" name="linked_notes[]" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" multiple>
+                                @foreach($notes as $noteOption)
+                                    <option value="{{ $noteOption->id }}">{{ $noteOption->title }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('linked_notes')" class="mt-2" />
+                        </div>
+
                         <div class="flex items-center justify-end mt-4">
                             <x-primary-button class="ms-4">
                                 {{ __('Save Note') }}
