@@ -60,7 +60,7 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
-        //
+        return view('notes.edit', ['note' => $note]);
     }
 
     /**
@@ -68,7 +68,18 @@ class NoteController extends Controller
      */
     public function update(Request $request, Note $note)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'nullable|string',
+        ]);
+
+        $note->update([
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['title']),
+            'content' => $validated['content'] ?? '',
+        ]);
+
+        return redirect()->route('notes.show', $note)->with('status', 'Note updated successfully!');
     }
 
     /**
@@ -76,6 +87,8 @@ class NoteController extends Controller
      */
     public function destroy(Note $note)
     {
-        //
+        $note->delete();
+
+        return redirect()->route('notes.index')->with('status', 'Note deleted successfully!');
     }
 }
