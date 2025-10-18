@@ -9,6 +9,8 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+        <!-- EasyMDE CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -55,5 +57,9 @@
                 background: #4f4f4f;
             }
         </style>
+        <!-- EasyMDE JS -->
+        <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+        <!-- Marked.js -->
+        <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
     </body>
 </html>

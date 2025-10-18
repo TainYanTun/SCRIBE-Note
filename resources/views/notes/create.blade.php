@@ -28,19 +28,6 @@
                             <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
 
-                        <!-- Content -->
-                        <div>
-                            <x-input-label for="content" :value="__('Content')" class="text-gray-400 text-sm font-medium mb-2" />
-                            <textarea 
-                                id="content" 
-                                name="content" 
-                                rows="12"
-                                class="block w-full bg-[#2c2c2c] border-transparent text-gray-100 placeholder-gray-600 focus:bg-[#323232] focus:ring-1 focus:ring-gray-600 focus:border-transparent rounded-lg shadow-sm transition-colors resize-none" 
-                                placeholder="Start writing..."
-                            >{{ old('content') }}</textarea>
-                            <x-input-error :messages="$errors->get('content')" class="mt-2" />
-                        </div>
-
                         <!-- Linked Notes -->
                         <div>
                             <x-input-label for="linked_notes" :value="__('Linked Notes')" class="text-gray-400 text-sm font-medium mb-2" />
@@ -53,7 +40,7 @@
                                 <select 
                                     id="linked_notes" 
                                     name="linked_notes[]" 
-                                    class="block w-full pl-10 pr-3 py-2.5 bg-[#2c2c2c] border-transparent text-gray-100 focus:bg-[#323232] focus:ring-1 focus:ring-gray-600 focus:border-transparent rounded-lg shadow-sm transition-colors" 
+                                    class="block w-full pl-10 pr-3 py-2.5 bg-[#2c2c2c] border-transparent text-gray-100 focus:bg-[#323232] focus:ring-1 focus:ring-gray-600 focus:border-transparent rounded-lg shadow-sm transition-colors scrollbar-thin" 
                                     multiple
                                 >
                                     @foreach($notes as $noteOption)
@@ -77,7 +64,7 @@
                                 <select 
                                     id="tags" 
                                     name="tags[]" 
-                                    class="block w-full pl-10 pr-3 py-2.5 bg-[#2c2c2c] border-transparent text-gray-100 focus:bg-[#323232] focus:ring-1 focus:ring-gray-600 focus:border-transparent rounded-lg shadow-sm transition-colors" 
+                                    class="block w-full pl-10 pr-3 py-2.5 bg-[#2c2c2c] border-transparent text-gray-100 focus:bg-[#323232] focus:ring-1 focus:ring-gray-600 focus:border-transparent rounded-lg shadow-sm transition-colors scrollbar-thin" 
                                     multiple
                                 >
                                     @foreach($tags as $tagOption)
@@ -87,6 +74,19 @@
                             </div>
                             <p class="mt-1.5 text-xs text-gray-600">Hold Ctrl (Cmd on Mac) to select multiple tags</p>
                             <x-input-error :messages="$errors->get('tags')" class="mt-2" />
+                        </div>
+
+                        <!-- Content -->
+                        <div>
+                            <x-input-label for="content" :value="__('Content')" class="text-gray-400 text-sm font-medium mb-2" />
+                            <textarea 
+                                id="easymde-editor" 
+                                name="content" 
+                                rows="12"
+                                class="block w-full bg-[#2c2c2c] border-transparent text-gray-100 placeholder-gray-600 focus:bg-[#323232] focus:ring-1 focus:ring-gray-600 focus:border-transparent rounded-lg shadow-sm transition-colors resize-none" 
+                                placeholder="Start writing..."
+                            >{{ old('content') }}</textarea>
+                            <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
 
                         <!-- Submit Button -->
@@ -103,4 +103,14 @@
             </div>
         </div>
     </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var easymde = new EasyMDE({
+            element: document.getElementById('easymde-editor'),
+            spellChecker: false, // Optional: disable spell checker
+            // Add other EasyMDE options here if needed
+        });
+    });
+</script>
 </x-app-layout>

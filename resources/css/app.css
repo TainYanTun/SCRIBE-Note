@@ -9,3 +9,60 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+.note-icon-size {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+/* Dark theme for EasyMDE */
+.EasyMDEContainer .CodeMirror {
+  background-color: #2d2d2d; /* Dark background for the editor area */
+  color: #f8f8f2; /* Light text color */
+  border-color: #444; /* Darker border */
+}
+
+.EasyMDEContainer .CodeMirror-cursor {
+  border-color: #f8f8f2; /* Light cursor color */
+}
+
+.EasyMDEContainer .editor-toolbar {
+  background-color: #3a3a3a; /* Dark background for the toolbar */
+  border-color: #444; /* Darker border */
+}
+
+.EasyMDEContainer .editor-toolbar > button {
+  color: #f8f8f2; /* Light icon color */
+}
+
+.EasyMDEContainer .editor-toolbar > button:hover,
+.EasyMDEContainer .editor-toolbar > .active {
+  background-color: #555; /* Hover/active background for toolbar buttons */
+  color: #f8f8f2;
+}
+
+.EasyMDEContainer .editor-preview,
+.EasyMDEContainer .editor-preview-side {
+  background-color: #2d2d2d; /* Dark background for the preview area */
+  color: #f8f8f2; /* Light text color */
+  border-color: #444; /* Darker border */
+}
+
+/* Adjustments for specific elements within the preview if needed */
+.EasyMDEContainer .editor-preview h1,
+.EasyMDEContainer .editor-preview h2,
+.EasyMDEContainer .editor-preview h3,
+.EasyMDEContainer .editor-preview h4,
+.EasyMDEContainer .editor-preview h5,
+.EasyMDEContainer .editor-preview h6 {
+  color: #f8f8f2; /* Ensure headings are visible */
+}
+
+.EasyMDEContainer .editor-preview a {
+  color: #8be9fd; /* Link color */
+}
+
+.EasyMDEContainer .editor-preview code {
+  background-color: #444; /* Code block background */
+  color: #f8f8f2;
+}
