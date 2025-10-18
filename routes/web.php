@@ -14,6 +14,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/notes/search', [NoteController::class, 'search'])->name('notes.search');
     Route::resource('notes', NoteController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::resource('tags', TagController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 });

@@ -18,18 +18,7 @@ class NoteController extends Controller
     {
         Gate::authorize('viewAny', Note::class);
 
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
-        $notes = $user->notes()->latest();
-
-        if ($search = $request->query('search')) {
-            $notes->where(function ($query) use ($search) {
-                $query->where('title', 'like', '%' . $search . '%')
-                      ->orWhere('content', 'like', '%' . $search . '%');
-            });
-        }
-
-        return view('notes.index', ['notes' => $notes->get()]);
+        return view('notes.index');
     }
 
     /**
@@ -139,14 +128,10 @@ class NoteController extends Controller
 
         if (isset($validated['linked_notes'])) {
             $note->linkedNotes()->sync($validated['linked_notes']);
-        } else {
-            $note->linkedNotes()->detach(); // If no linked_notes are provided, detach all existing links
         }
 
         if (isset($validated['tags'])) {
             $note->tags()->sync($validated['tags']);
-        } else {
-            $note->tags()->detach(); // If no tags are provided, detach all existing tags
         }
 
         return redirect()->route('notes.show', $note)->with('status', 'Note updated successfully!');
@@ -162,5 +147,24 @@ class NoteController extends Controller
         $note->delete();
 
         return redirect()->route('notes.index')->with('status', 'Note deleted successfully!');
+    }
+
+    public function search(Request $request)
+    {
+        Gate::authorize('viewAny', Note::class);
+
+        $search = $request->query('search');
+        $notesQuery = Note::where('user_id', auth()->id());
+
+        if ($search) {
+            $notesQuery->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                      ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        $notes = $notesQuery->latest()->get();
+
+        return view('notes.search', ['notes' => $notes, 'search' => $search]);
     }
 }

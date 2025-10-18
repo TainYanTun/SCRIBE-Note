@@ -14,22 +14,46 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+        <div class="min-h-screen bg-[#191919]">
+            
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+            <div class="flex h-screen">
+                <aside class="w-1/8 bg-[#191919] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent border-r border-gray-800/50">
+                    @include('layouts.sidebar')
+                </aside>
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <div class="w-7/8 flex flex-col">
+                    <!-- Page Heading -->
+                    @if (isset($header))
+                        <header class="bg-[#191919] shadow">
+                            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-gray-100">
+                                {{ $header }}
+                            </div>
+                        </header>
+                    @endif
+
+                    <!-- Page Content -->
+                    <main class="flex-grow p-6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+                        {{ $slot }}
+                    </main>
+                </div>
+            </div>
         </div>
+        <style>
+            /* Custom scrollbar for Notion-like appearance */
+            .scrollbar-thin::-webkit-scrollbar {
+                width: 6px;
+            }
+            .scrollbar-thin::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            .scrollbar-thin::-webkit-scrollbar-thumb {
+                background: #3f3f3f;
+                border-radius: 3px;
+            }
+            .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+                background: #4f4f4f;
+            }
+        </style>
     </body>
 </html>
