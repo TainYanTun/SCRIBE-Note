@@ -5,11 +5,213 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-[#282828] overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-100">
-                    <p class="mb-4">{{ __("You're logged in! Ready to manage your notes?") }}</p>
+            <!-- Welcome Banner -->
+            <div class="bg-gradient-to-r from-blue-600/10 to-purple-600/10 border border-blue-600/20 rounded-lg p-6 mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-blue-600/20 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-100">{{ __("You're all set!") }}</h3>
+                        <p class="text-sm text-gray-400">{{ __("Ready to manage your notes and ideas") }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <!-- Total Notes Stat -->
+                <div class="bg-[#252525] border border-gray-800/50 rounded-lg p-5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Total Notes</p>
+                            <p class="text-3xl font-bold text-gray-100">{{ $totalNotes }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Tags Stat -->
+                <div class="bg-[#252525] border border-gray-800/50 rounded-lg p-5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Total Tags</p>
+                            <p class="text-3xl font-bold text-gray-100">{{ $totalTags }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-600/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5.5c.58 0 1.13.2 1.55.55L20 10l-7 7-5.45-5.45c-.35-.42-.55-.97-.55-1.55V7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Stat -->
+                <div class="bg-[#252525] border border-gray-800/50 rounded-lg p-5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Recent Activity</p>
+                            <p class="text-3xl font-bold text-gray-100">{{ $notes->count() }}</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-600/10 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Notes and Tags Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-[#252525] border border-gray-800/50 rounded-lg overflow-hidden">
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800/50">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <h3 class="text-base font-semibold text-gray-100">Recent Notes</h3>
+                        </div>
+                        @if (!$notes->isEmpty())
+                            <a href="{{ route('notes.index') }}" class="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
+                                View All
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        @endif
+                    </div>
+
+                    @if ($notes->isEmpty())
+                        <!-- Empty State -->
+                        <div class="flex flex-col items-center justify-center py-12 px-6">
+                            <div class="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <h4 class="text-base font-medium text-gray-300 mb-2">No notes yet</h4>
+                            <p class="text-sm text-gray-600 mb-4 text-center">Start your journey by creating your first note</p>
+                            <a href="{{ route('notes.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Create your first note
+                            </a>
+                        </div>
+                    @else
+                        <!-- Notes List -->
+                        <div class="divide-y divide-gray-800/50">
+                            @foreach ($notes as $note)
+                                <a href="{{ route('notes.show', $note) }}" class="flex items-center gap-4 px-6 py-4 hover:bg-[#2a2a2a] transition-colors group">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 bg-gray-800/50 group-hover:bg-blue-600/20 rounded-lg flex items-center justify-center transition-colors">
+                                            <svg class="w-5 h-5 text-gray-600 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">
+                                            {{ $note->title }}
+                                        </h4>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <span class="text-xs text-gray-600">{{ $note->updated_at->diffForHumans() }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <svg class="w-5 h-5 text-gray-700 group-hover:text-gray-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+
+                        <!-- Footer Action -->
+                        <div class="px-6 py-4 bg-[#222222]/50 border-t border-gray-800/50">
+                            <a href="{{ route('notes.index') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-800 text-gray-300 text-sm font-medium rounded-lg transition-colors w-full justify-center">
+                                View All Notes
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Tags Section -->
+                <div class="bg-[#252525] border border-gray-800/50 rounded-lg overflow-hidden">
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800/50">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5.5c.58 0 1.13.2 1.55.55L20 10l-7 7-5.45-5.45c-.35-.42-.55-.97-.55-1.55V7z"></path>
+                            </svg>
+                            <h3 class="text-base font-semibold text-gray-100">Your Tags</h3>
+                        </div>
+                        @if (!$allTags->isEmpty())
+                            <a href="{{ route('tags.index') }}" class="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
+                                View All
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        @endif
+                    </div>
+
+                    @if ($allTags->isEmpty())
+                        <div class="flex flex-col items-center justify-center py-12 px-6">
+                            <div class="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5.5c.58 0 1.13.2 1.55.55L20 10l-7 7-5.45-5.45c-.35-.42-.55-.97-.55-1.55V7z"></path>
+                                </svg>
+                            </div>
+                            <h4 class="text-base font-medium text-gray-300 mb-2">No tags yet</h4>
+                            <p class="text-sm text-gray-600 mb-4 text-center">Organize your notes with tags</p>
+                            <a href="{{ route('tags.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                Create your first tag
+                            </a>
+                        </div>
+                    @else
+                        <div class="divide-y divide-gray-800/50">
+                            @foreach ($allTags as $tag)
+                                <a href="{{ route('tags.show', $tag) }}" class="flex items-center gap-4 px-6 py-4 hover:bg-[#2a2a2a] transition-colors group">
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">
+                                            #{{ $tag->name }}
+                                        </h4>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <span class="text-xs text-gray-600">{{ $tag->notes_count }} notes</span>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <svg class="w-5 h-5 text-gray-700 group-hover:text-gray-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                        <div class="px-6 py-4 bg-[#222222]/50 border-t border-gray-800/50">
+                            <a href="{{ route('tags.index') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-800 text-gray-300 text-sm font-medium rounded-lg transition-colors w-full justify-center">
+                                View All Tags
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

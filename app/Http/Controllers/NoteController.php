@@ -18,7 +18,13 @@ class NoteController extends Controller
     {
         Gate::authorize('viewAny', Note::class);
 
-        return view('notes.index');
+        $notes = $request->user()->notes()->latest()->get();
+
+        $groupedNotes = $notes->groupBy(function ($note) {
+            return $note->created_at->format('Y-m-d');
+        });
+
+        return view('notes.index', compact('groupedNotes'));
     }
 
     /**

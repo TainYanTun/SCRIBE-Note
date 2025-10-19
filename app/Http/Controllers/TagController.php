@@ -47,7 +47,8 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        return view('tags.show', ['tag' => $tag]);
+        $notes = $tag->notes()->latest()->paginate(10);
+        return view('tags.show', compact('tag', 'notes'));
     }
 
     /**

@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-8">
+    <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <!-- Note Container -->
             <div class="bg-[#252525] overflow-hidden shadow-sm sm:rounded-lg border border-gray-800/50">
@@ -99,9 +99,7 @@
 
                 <!-- Content -->
                 <div class="px-8 pb-8">
-                    <div class="prose prose-invert prose-sm max-w-none">
-                        <div class="text-gray-300 leading-relaxed whitespace-pre-wrap break-words">{!! nl2br(e($note->content)) !!}</div>
-                    </div>
+                    <div id="markdown-output" class="prose prose-invert prose-sm max-w-none text-gray-300 leading-relaxed"></div>
                 </div>
             </div>
 
@@ -130,4 +128,11 @@
             @endif
         </div>
     </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const markdownContent = `{!! addslashes($note->content) !!}`;
+        document.getElementById('markdown-output').innerHTML = marked.parse(markdownContent);
+    });
+</script>
 </x-app-layout>

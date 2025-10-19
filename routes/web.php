@@ -10,13 +10,20 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user = auth()->user();
+    $notes = $user->notes()->latest()->take(5)->get();
+    $totalNotes = $user->notes()->count();
+    $totalTags = $user->tags()->count();
+    $allTags = $user->tags()->withCount(['notes' => function ($query) use ($user) {
+        $query->where('user_id', $user->id);
+    }])->get();
+    return view('dashboard', compact('notes', 'totalNotes', 'totalTags', 'allTags'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/notes/search', [NoteController::class, 'search'])->name('notes.search');
     Route::resource('notes', NoteController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
-    Route::resource('tags', TagController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+    Route::resource('tags', TagController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

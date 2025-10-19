@@ -53,4 +53,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Note::class);
     }
+
+    /**
+     * Get all of the tags for the user through their notes.
+     */
+    public function tags()
+    {
+        return Tag::whereHas('notes', function ($query) {
+            $query->where('user_id', $this->id);
+        });
+    }
 }

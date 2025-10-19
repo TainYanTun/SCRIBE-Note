@@ -42,7 +42,7 @@
 }
 
 .EasyMDEContainer .editor-preview,
-.EasyMDEContainer .editor-preview-side {
+.EasyMDEContainer .EasyMDEContainer .editor-preview-side {
   background-color: #2d2d2d; /* Dark background for the preview area */
   color: #f8f8f2; /* Light text color */
   border-color: #444; /* Darker border */
