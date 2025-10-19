@@ -13,7 +13,13 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::latest()->get();
+        $user = auth()->user();
+        $tags = Tag::withCount(['notes' => function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])
+        ->latest()
+        ->get();
+
         return view('tags.index', ['tags' => $tags]);
     }
 
