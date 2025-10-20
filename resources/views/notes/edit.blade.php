@@ -110,8 +110,35 @@
     document.addEventListener('DOMContentLoaded', function() {
         var easymde = new EasyMDE({
             element: document.getElementById('easymde-editor'),
-            spellChecker: false, // Optional: disable spell checker
-            // Add other EasyMDE options here if needed
+            spellChecker: false,
+            
+            // Enable preview
+            previewRender: function(plainText) {
+                return this.parent.markdown(plainText);
+            },
+            
+            // Toolbar configuration
+            toolbar: [
+                "bold", "italic", "heading", "|",
+                "quote", "unordered-list", "ordered-list", "|",
+                "link", "image", "|",
+                "preview", "side-by-side", "fullscreen", "|",
+                "guide"
+            ],
+            
+            // Enable rendering features
+            renderingConfig: {
+                singleLineBreaks: false,
+                codeSyntaxHighlighting: true,
+            },
+            
+            // Status bar
+            status: ['lines', 'words', 'cursor'],
+            
+            // Auto-save (optional)
+            autosave: {
+                enabled: false
+            }
         });
     });
 </script>
@@ -173,10 +200,146 @@
         border-radius: 0 0 0.5rem 0.5rem;
     }
     
+    /* Preview Styling */
     .editor-preview,
     .editor-preview-side {
         background-color: #2c2c2c;
         color: #e5e5e5;
+        padding: 1rem;
+    }
+    
+    /* Headers in preview */
+    .editor-preview h1,
+    .editor-preview-side h1 {
+        font-size: 2em;
+        font-weight: bold;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        color: #f3f4f6;
+        border-bottom: 2px solid #4b5563;
+        padding-bottom: 0.3em;
+    }
+    
+    .editor-preview h2,
+    .editor-preview-side h2 {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        color: #f3f4f6;
+        border-bottom: 1px solid #4b5563;
+        padding-bottom: 0.3em;
+    }
+    
+    .editor-preview h3,
+    .editor-preview-side h3 {
+        font-size: 1.25em;
+        font-weight: bold;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        color: #f3f4f6;
+    }
+    
+    .editor-preview h4,
+    .editor-preview-side h4,
+    .editor-preview h5,
+    .editor-preview-side h5,
+    .editor-preview h6,
+    .editor-preview-side h6 {
+        font-weight: bold;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        color: #f3f4f6;
+    }
+    
+    /* Lists in preview */
+    .editor-preview ul,
+    .editor-preview-side ul,
+    .editor-preview ol,
+    .editor-preview-side ol {
+        margin-left: 1.5em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+    
+    .editor-preview ul {
+        list-style-type: disc;
+    }
+    
+    .editor-preview ol {
+        list-style-type: decimal;
+    }
+    
+    .editor-preview li,
+    .editor-preview-side li {
+        margin-bottom: 0.25em;
+        line-height: 1.6;
+    }
+    
+    /* Links in preview */
+    .editor-preview a,
+    .editor-preview-side a {
+        color: #60a5fa;
+        text-decoration: none;
+        border-bottom: 1px solid #60a5fa;
+    }
+    
+    .editor-preview a:hover,
+    .editor-preview-side a:hover {
+        color: #93c5fd;
+        border-bottom-color: #93c5fd;
+    }
+    
+    /* Images in preview */
+    .editor-preview img,
+    .editor-preview-side img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        margin: 1em 0;
+        border: 1px solid #4b5563;
+    }
+    
+    /* Paragraphs in preview */
+    .editor-preview p,
+    .editor-preview-side p {
+        margin-bottom: 1em;
+        line-height: 1.6;
+    }
+    
+    /* Blockquotes in preview */
+    .editor-preview blockquote,
+    .editor-preview-side blockquote {
+        border-left: 4px solid #4b5563;
+        padding-left: 1em;
+        margin-left: 0;
+        color: #9ca3af;
+        font-style: italic;
+    }
+    
+    /* Code blocks in preview */
+    .editor-preview code,
+    .editor-preview-side code {
+        background-color: #1f2937;
+        padding: 0.2em 0.4em;
+        border-radius: 0.25rem;
+        font-family: monospace;
+        font-size: 0.9em;
+    }
+    
+    .editor-preview pre,
+    .editor-preview-side pre {
+        background-color: #1f2937;
+        padding: 1em;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 1em 0;
+    }
+    
+    .editor-preview pre code,
+    .editor-preview-side pre code {
+        background-color: transparent;
+        padding: 0;
     }
     
     .CodeMirror-scroll {

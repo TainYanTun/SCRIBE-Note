@@ -93,7 +93,7 @@
                 @endif
 
                 <!-- Divider -->
-                <div class="px-8 pb-6">
+                <div class="px-8 pb-4">
                     <div class="border-t border-gray-800/50"></div>
                 </div>
 
@@ -132,7 +132,255 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const markdownContent = `{!! addslashes($note->content) !!}`;
+        
+        // Configure marked.js options for better rendering
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            headerIds: true,
+            mangle: false
+        });
+        
         document.getElementById('markdown-output').innerHTML = marked.parse(markdownContent);
     });
 </script>
+
+<style>
+    /* Markdown Content Styling */
+    #markdown-output {
+        line-height: 1.7;
+        color: #e5e5e5;
+    }
+    
+    /* Headers */
+    #markdown-output h1 {
+        font-size: 2em;
+        font-weight: bold;
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+        color: #f3f4f6;
+        border-bottom: 2px solid #4b5563;
+        padding-bottom: 0.3em;
+        line-height: 1.3;
+    }
+    
+    #markdown-output h1:first-child {
+        margin-top: 0;
+    }
+    
+    #markdown-output h2 {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+        color: #f3f4f6;
+        border-bottom: 1px solid #4b5563;
+        padding-bottom: 0.3em;
+        line-height: 1.3;
+    }
+    
+    #markdown-output h3 {
+        font-size: 1.25em;
+        font-weight: bold;
+        margin-top: 1.3em;
+        margin-bottom: 0.5em;
+        color: #f3f4f6;
+        line-height: 1.3;
+    }
+    
+    #markdown-output h4 {
+        font-size: 1.1em;
+        font-weight: bold;
+        margin-top: 1.2em;
+        margin-bottom: 0.5em;
+        color: #f3f4f6;
+        line-height: 1.3;
+    }
+    
+    #markdown-output h5,
+    #markdown-output h6 {
+        font-size: 1em;
+        font-weight: bold;
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+        color: #f3f4f6;
+        line-height: 1.3;
+    }
+    
+    /* Paragraphs */
+    #markdown-output p {
+        margin-bottom: 1em;
+        line-height: 1.7;
+    }
+    
+    /* Lists */
+    #markdown-output ul,
+    #markdown-output ol {
+        margin-bottom: 1em;
+        margin-left: 1.5em;
+        line-height: 1.7;
+    }
+    
+    #markdown-output ul {
+        list-style-type: disc;
+    }
+    
+    #markdown-output ol {
+        list-style-type: decimal;
+    }
+    
+    #markdown-output li {
+        margin-bottom: 0.25em;
+        padding-left: 0.25em;
+    }
+    
+    #markdown-output li > p {
+        margin-bottom: 0.5em;
+    }
+    
+    #markdown-output ul ul,
+    #markdown-output ol ul {
+        list-style-type: circle;
+        margin-top: 0.25em;
+    }
+    
+    #markdown-output ul ul ul,
+    #markdown-output ol ul ul,
+    #markdown-output ol ol ul {
+        list-style-type: square;
+    }
+    
+    /* Links */
+    #markdown-output a {
+        color: #60a5fa;
+        text-decoration: none;
+        border-bottom: 1px solid #60a5fa;
+        transition: all 0.2s ease;
+    }
+    
+    #markdown-output a:hover {
+        color: #93c5fd;
+        border-bottom-color: #93c5fd;
+        background-color: rgba(96, 165, 250, 0.1);
+    }
+    
+    /* Images */
+    #markdown-output img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        margin: 1.5em 0;
+        border: 1px solid #4b5563;
+        display: block;
+    }
+    
+    /* Blockquotes */
+    #markdown-output blockquote {
+        border-left: 4px solid #4b5563;
+        padding-left: 1em;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        color: #9ca3af;
+        font-style: italic;
+    }
+    
+    #markdown-output blockquote p {
+        margin-bottom: 0.5em;
+    }
+    
+    #markdown-output blockquote p:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* Code */
+    #markdown-output code {
+        background-color: #1f2937;
+        padding: 0.2em 0.4em;
+        border-radius: 0.25rem;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9em;
+        color: #fbbf24;
+    }
+    
+    #markdown-output pre {
+        background-color: #1f2937;
+        padding: 1em;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 1em 0;
+        border: 1px solid #374151;
+    }
+    
+    #markdown-output pre code {
+        background-color: transparent;
+        padding: 0;
+        border-radius: 0;
+        color: #e5e5e5;
+        font-size: 0.875em;
+        line-height: 1.6;
+    }
+    
+    /* Horizontal Rules */
+    #markdown-output hr {
+        border: none;
+        border-top: 1px solid #4b5563;
+        margin: 2em 0;
+    }
+    
+    /* Tables */
+    #markdown-output table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1em 0;
+        overflow: hidden;
+        border-radius: 0.5rem;
+    }
+    
+    #markdown-output th,
+    #markdown-output td {
+        border: 1px solid #4b5563;
+        padding: 0.75em;
+        text-align: left;
+    }
+    
+    #markdown-output th {
+        background-color: #1f2937;
+        font-weight: bold;
+        color: #f3f4f6;
+    }
+    
+    #markdown-output tr:nth-child(even) {
+        background-color: rgba(31, 41, 55, 0.3);
+    }
+    
+    /* Strong and Emphasis */
+    #markdown-output strong {
+        font-weight: bold;
+        color: #f3f4f6;
+    }
+    
+    #markdown-output em {
+        font-style: italic;
+        color: #d1d5db;
+    }
+    
+    /* Task Lists */
+    #markdown-output input[type="checkbox"] {
+        margin-right: 0.5em;
+        cursor: pointer;
+    }
+    
+    #markdown-output li.task-list-item {
+        list-style-type: none;
+        margin-left: -1.5em;
+    }
+    
+    /* Strikethrough */
+    #markdown-output del {
+        text-decoration: line-through;
+        color: #9ca3af;
+    }
+</style>
 </x-app-layout>
