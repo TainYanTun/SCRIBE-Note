@@ -61,5 +61,6 @@
         <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
         <!-- Marked.js -->
         <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+        @stack('scripts')
     </body>
 </html>

@@ -55,6 +55,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all of the note links for the user.
+     */
+    public function noteLinks()
+    {
+        return $this->hasManyThrough(NoteLink::class, Note::class, 'user_id', 'source_note_id', 'id', 'id');
+    }
+
+    /**
      * Get all of the tags for the user through their notes.
      */
     public function tags()
