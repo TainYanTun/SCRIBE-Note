@@ -18,7 +18,13 @@ Route::get('/dashboard', function () {
     $allTags = $user->tags()->withCount(['notes' => function ($query) use ($user) {
         $query->where('user_id', $user->id);
     }])->get();
-    return view('dashboard', compact('notes', 'totalNotes', 'totalTags', 'allTags'));
+
+    $userNotesIds = $user->notes()->pluck('id');
+    $totalNoteLinks = \App\Models\NoteLink::whereIn('source_note_id', $userNotesIds)
+                                        ->orWhereIn('target_note_id', $userNotesIds)
+                                        ->count();
+
+    return view('dashboard', compact('notes', 'totalNotes', 'totalTags', 'allTags', 'totalNoteLinks'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {

@@ -16,7 +16,7 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-100">{{ __("You're all set!") }}</h3>
+                        <h3 class="text-lg font-semibold text-gray-100">{{ __("Welcome to Scribe!" ) }}</h3>
                         <p class="text-sm text-gray-400">{{ __("Ready to manage your notes and ideas") }}</p>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                 <div class="bg-[#252525] border border-gray-800/50 rounded-lg p-5">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Total Tags</p>
+                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Effected Tags</p>
                             <p class="text-3xl font-bold text-gray-100">{{ $totalTags }}</p>
                         </div>
                         <div class="w-12 h-12 bg-green-600/10 rounded-lg flex items-center justify-center">
@@ -54,17 +54,15 @@
                     </div>
                 </div>
 
-                <!-- Recent Activity Stat -->
+                <!-- Total Note Links Stat -->
                 <div class="bg-[#252525] border border-gray-800/50 rounded-lg p-5">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Recent Activity</p>
-                            <p class="text-3xl font-bold text-gray-100">{{ $notes->count() }}</p>
+                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Total Note Links</p>
+                            <p class="text-3xl font-bold text-gray-100">{{ $totalNoteLinks }}</p>
                         </div>
                         <div class="w-12 h-12 bg-purple-600/10 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
+                            <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101"></path></svg>
                         </div>
                     </div>
                 </div>

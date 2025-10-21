@@ -1,61 +1,153 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="#" target="_blank">
+    <img src="public/logo.svg" width="150" alt="Scribe Logo">
+  </a>
 </p>
 
-## About Laravel
+<h1 align="center">Scribe: Your Personal Knowledge Graph</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  A modern, interconnected note-taking application built with Laravel, designed to help you organize your thoughts, ideas, and knowledge in a meaningful way.
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<p align="center">
+  <a href="#key-features">Features</a> •
+  <a href="#technologies-used">Tech Stack</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#project-structure">Structure</a> •
+  <a href="#license">License</a>
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ✨ Project Overview
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Scribe is more than just a note-taking app; it's a tool to build your personal knowledge graph. It allows users to create, tag, and link notes together, transforming scattered information into an organized, interconnected web of knowledge. Whether you're a student, researcher, or just someone who loves to learn, Scribe helps you connect the dots between your ideas.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+This project was developed as a final university submission, showcasing a comprehensive understanding of modern web application development principles.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🚀 Key Features
 
-## Laravel Sponsors
+*   **Intuitive Note Creation**: Easily create and manage notes with a clean interface.
+*   **Tagging System**: Organize your notes with custom tags for quick categorization and retrieval.
+*   **Interconnected Notes**: Link related notes together to build a personal knowledge graph, revealing relationships between your ideas.
+*   **User Authentication**: Secure user registration, login, and profile management.
+*   **Dashboard Overview**: A personalized dashboard providing quick insights into your notes, tags, and note links.
+*   **Responsive Design**: A clean and responsive user interface built with Tailwind CSS.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 💻 Technologies Used
 
-### Premium Partners
+*   **Backend**:
+    *   [Laravel](https://laravel.com/) (PHP Framework)
+    *   [Eloquent ORM](https://laravel.com/docs/eloquent)
+*   **Frontend**:
+    *   [Blade Templates](https://laravel.com/docs/blade)
+    *   [Tailwind CSS](https://tailwindcss.com/) (Utility-First CSS Framework)
+    *   [Vite](https://vitejs.dev/) (Frontend Build Tool)
+    *   JavaScript
+*   **Database**:
+    *   SQLite (default, configurable)
+*   **Other**:
+    *   EasyMDE (Markdown Editor)
+    *   Marked.js (Markdown Parser)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## ⚙️ Installation
 
-## Contributing
+Follow these steps to get Scribe up and running on your local machine.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Prerequisites
 
-## Code of Conduct
+*   PHP >= 8.1
+*   Composer
+*   Node.js & npm (or Yarn)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Steps
 
-## Security Vulnerabilities
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository_url>
+    cd scribe
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+2.  **Install PHP dependencies:**
+    ```bash
+    composer install
+    ```
 
-## License
+3.  **Copy the environment file:**
+    ```bash
+    cp .env.example .env
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+4.  **Generate an application key:**
+    ```bash
+    php artisan key:generate
+    ```
+
+5.  **Configure your database:**
+    *   Open the `.env` file and configure your database connection. By default, it uses SQLite. If you want to use SQLite, ensure you have a `database.sqlite` file in the `database/` directory (you can create it with `touch database/database.sqlite`).
+
+6.  **Run database migrations and seeders:**
+    ```bash
+    php artisan migrate --seed
+    ```
+    (The `--seed` flag will populate your database with some initial data, including a default user: `test@example.com` / `password`).
+
+7.  **Install Node.js dependencies:**
+    ```bash
+    npm install
+    # OR yarn install
+    ```
+
+8.  **Compile frontend assets:**
+    ```bash
+    npm run dev
+    # OR npm run build for production
+    ```
+
+9.  **Start the development server:**
+    ```bash
+    php artisan serve
+    ```
+
+    The application will be accessible at `http://127.0.0.1:8000`.
+
+## 🚀 Usage
+
+1.  **Register/Login**: Navigate to the application in your browser and register a new account or log in with the seeded user (`test@example.com` / `password`).
+2.  **Dashboard**: Get an overview of your notes, tags, and note links.
+3.  **Create Notes**: Go to the "Notes" section to create new notes. You can use Markdown for content.
+4.  **Manage Tags**: Create and assign tags to your notes to categorize them.
+5.  **Link Notes**: Connect related notes to build your knowledge graph.
+6.  **Graph View**: Explore the relationships between your notes in the dedicated graph view.
+
+## 📂 Project Structure
+
+The project follows the standard Laravel directory structure, with key directories including:
+
+*   `app/`: Core application logic (Models, Controllers, Policies).
+*   `config/`: Application configuration files.
+*   `database/`: Migrations, seeders, and factories.
+*   `public/`: Web server entry point and compiled assets.
+*   `resources/`: Frontend assets (Blade views, CSS, JS).
+*   `routes/`: Web and authentication route definitions.
+
+## 💡 Future Enhancements
+
+*   Full-text search capabilities.
+*   Real-time collaboration on notes.
+*   More interactive and customizable graph visualization.
+*   Note versioning and history.
+*   Export notes to various formats.
+
+## 🤝 Contributing
+
+Contributions are welcome! If you have suggestions or find issues, please open an issue or submit a pull request.
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+---
+<p align="center">Made with ❤️ by [Your Name/Team Name]</p>
