@@ -7,81 +7,30 @@
                   ->orWhere('content', 'like', "%{$search}%");
         });
     }
-    $notes = $notesQuery->latest()->get();
+    $totalNotes = $notesQuery->count();
+    $notes = $notesQuery->latest()->take(8)->get();
+
+    $favoriteNotes = App\Models\Note::where('user_id', auth()->id())
+        ->whereHas('tags', function ($query) {
+            $query->where('name', 'favorite');
+        })->latest()->get();
+
+    $importantNotes = App\Models\Note::where('user_id', auth()->id())
+        ->whereHas('tags', function ($query) {
+            $query->where('name', 'important');
+        })->latest()->get();
 @endphp
 
 <div class="flex flex-col h-full bg-[#1d1d1d] border-r border-gray-800">
-    <!-- Logo -->
-    <div class="shrink-0 flex items-center justify-between p-4 border-b border-gray-800/50">
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-            <x-application-logo class="block h-6 w-auto fill-current text-gray-100" />
-        </a>
-    </div>
-
-    <div class="flex-grow px-3 py-2 overflow-hidden">
-        <!-- Navigation Links -->
-        <div class="space-y-1 mb-4">
-            <a href="{{ route('dashboard') }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                </svg>
-                {{ __('Home') }}
-            </a>
-            <a href="{{ route('notes.search') }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                </svg>
-                {{ __('Search') }}
-            </a>
-            <a href="{{ route('graph.index') }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                </svg>
-                {{ __('Graph View') }}
-            </a>
-        </div>
-
-        <!-- Create Note Button -->
-        <a href="{{ route('notes.create') }}" class="flex items-center justify-center px-3 py-2 bg-white/10 hover:bg-white/15 border border-white/10 rounded-md text-sm text-gray-200 transition-colors duration-150 mb-4 w-full">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-            {{ __('Create Note') }}
-        </a>
-
-        <!-- Notes List -->
-        <div class="space-y-1">
-            <div class="text-xs text-gray-500 uppercase tracking-wider px-2 py-1 font-semibold">
-                Notes
-            </div>
-            <ul class="space-y-0.5 max-h-[calc(100vh-400px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
-                @forelse ($notes as $note)
-                    <li>
-                        <a href="{{ route('notes.show', $note) }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150 group">
-                            <svg class="note-icon-size mr-2 text-gray-500 group-hover:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            <span class="truncate">{{ $note->title }}</span>
-                        </a>
-                    </li>
-                @empty
-                    <li>
-                        <p class="px-2 py-1.5 text-sm text-gray-500">No notes found.</p>
-                    </li>
-                @endforelse
-            </ul>
-        </div>
-    </div>
-
-    <!-- Settings Dropdown -->
-    <div class="hidden sm:flex sm:items-center sm:justify-center p-3 border-t border-gray-800/50">
-        <x-dropdown align="right" width="48">
+    <!-- Profile Section -->
+    <div class="p-3 border-b border-gray-800/50">
+        <x-dropdown align="left" width="48">
             <x-slot name="trigger">
                 <button class="flex items-center w-full px-2 py-2 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
-                    <div class="flex items-center justify-center w-6 h-6 rounded-md bg-gradient-to-br from-blue-500 to-purple-600 text-white text-xs font-semibold mr-2">
+                    <div class="flex items-center justify-center w-6 h-6 rounded-md bg-gray-700 text-white text-sm font-semibold mr-3">
                         {{ substr(Auth::user()->name, 0, 1) }}
                     </div>
-                    <div class="flex-1 text-left truncate">{{ Auth::user()->name }}</div>
+                    <div class="flex-1 text-left truncate" style="color: #e3e3e3;">{{ Auth::user()->name }}'s Scribe</div>
                     <svg class="fill-current h-4 w-4 ml-1 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
@@ -93,10 +42,8 @@
                     {{ __('Profile') }}
                 </x-dropdown-link>
 
-                <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <x-dropdown-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
@@ -106,10 +53,224 @@
             </x-slot>
         </x-dropdown>
     </div>
+
+    <div class="flex flex-col flex-grow px-3 py-3 overflow-hidden">
+        <!-- Navigation Links -->
+        <div class="space-y-0.5 mb-6">
+            <a href="{{ route('dashboard') }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                {{ __('Home') }}
+            </a>
+            <a href="{{ route('notes.search') }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                {{ __('Search') }}
+            </a>
+            <a href="{{ route('graph.index') }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
+                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                {{ __('Graph View') }}
+            </a>
+        </div>
+
+        <!-- Create Note Button -->
+        <a href="{{ route('notes.create') }}" class="flex items-center justify-center px-3 py-2 bg-white/10 hover:bg-white/15 border border-white/10 rounded-md text-sm text-gray-200 transition-colors duration-150 mb-6 w-full">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            {{ __('Create Note') }}
+        </a>
+
+        <!-- Favorites -->
+        <div class="space-y-0.5 mb-5">
+            <div class="text-xs text-gray-500 uppercase tracking-wider px-2 py-1.5 font-semibold">
+                Favorites
+            </div>
+            <ul class="space-y-0.5">
+                @forelse ($favoriteNotes as $note)
+                    <li class="note-item">
+                        <div class="relative">
+                            <a href="{{ route('notes.show', $note) }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150 group w-full">
+                                <svg class="w-4 h-4 mr-3 text-gray-500 group-hover:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="truncate">{{ $note->title }}</span>
+                            </a>
+                            <div class="note-actions absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-0.5 bg-[#1d1d1d] pl-2">
+                                <form action="{{ route('notes.toggleTag', $note) }}" method="POST" class="toggle-tag-form">
+                                    @csrf
+                                    <input type="hidden" name="tag" value="favorite">
+                                    <button type="submit" class="p-1 rounded-md hover:bg-white/10 transition-colors">
+                                        <svg class="w-3.5 h-3.5 {{ $note->tags->contains('name', 'favorite') ? 'text-yellow-400' : 'text-gray-500' }}" fill="{{ $note->tags->contains('name', 'favorite') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                                <form action="{{ route('notes.toggleTag', $note) }}" method="POST" class="toggle-tag-form">
+                                    @csrf
+                                    <input type="hidden" name="tag" value="important">
+                                    <button type="submit" class="p-1 rounded-md hover:bg-white/10 transition-colors">
+                                        <svg class="w-3.5 h-3.5 {{ $note->tags->contains('name', 'important') ? 'text-red-500' : 'text-gray-500' }}" fill="{{ $note->tags->contains('name', 'important') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                @empty
+                    <li>
+                        <p class="px-2 py-1.5 text-sm text-gray-500">No favorite notes.</p>
+                    </li>
+                @endforelse
+            </ul>
+        </div>
+
+        <!-- Important -->
+        <div class="space-y-0.5 mb-5">
+            <div class="text-xs text-gray-500 uppercase tracking-wider px-2 py-1.5 font-semibold">
+                Important
+            </div>
+            <ul class="space-y-0.5">
+                @forelse ($importantNotes as $note)
+                    <li class="note-item">
+                        <div class="relative">
+                            <a href="{{ route('notes.show', $note) }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150 group w-full">
+                                <svg class="w-4 h-4 mr-3 text-gray-500 group-hover:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="truncate">{{ $note->title }}</span>
+                            </a>
+                            <div class="note-actions absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-0.5 bg-[#1d1d1d] pl-2">
+                                <form action="{{ route('notes.toggleTag', $note) }}" method="POST" class="toggle-tag-form">
+                                    @csrf
+                                    <input type="hidden" name="tag" value="favorite">
+                                    <button type="submit" class="p-1 rounded-md hover:bg-white/10 transition-colors">
+                                        <svg class="w-3.5 h-3.5 {{ $note->tags->contains('name', 'favorite') ? 'text-yellow-400' : 'text-gray-500' }}" fill="{{ $note->tags->contains('name', 'favorite') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                                <form action="{{ route('notes.toggleTag', $note) }}" method="POST" class="toggle-tag-form">
+                                    @csrf
+                                    <input type="hidden" name="tag" value="important">
+                                    <button type="submit" class="p-1 rounded-md hover:bg-white/10 transition-colors">
+                                        <svg class="w-3.5 h-3.5 {{ $note->tags->contains('name', 'important') ? 'text-red-500' : 'text-gray-500' }}" fill="{{ $note->tags->contains('name', 'important') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                @empty
+                    <li>
+                        <p class="px-2 py-1.5 text-sm text-gray-500">No important notes.</p>
+                    </li>
+                @endforelse
+            </ul>
+        </div>
+
+        <!-- Notes List -->
+        <div class="space-y-0.5 flex-grow min-h-0 flex flex-col">
+            <div class="text-xs text-gray-500 uppercase tracking-wider px-2 py-1.5 font-semibold">
+                Notes
+            </div>
+            <ul class="space-y-0.5 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+                @forelse ($notes as $note)
+                    <li class="note-item">
+                        <div class="relative">
+                            <a href="{{ route('notes.show', $note) }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150 group w-full">
+                                <svg class="w-4 h-4 mr-3 text-gray-500 group-hover:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="truncate">{{ $note->title }}</span>
+                            </a>
+                            <div class="note-actions absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-0.5 bg-[#1d1d1d] pl-2">
+                                <form action="{{ route('notes.toggleTag', $note) }}" method="POST" class="toggle-tag-form">
+                                    @csrf
+                                    <input type="hidden" name="tag" value="favorite">
+                                    <button type="submit" class="p-1 rounded-md hover:bg-white/10 transition-colors">
+                                        <svg class="w-3.5 h-3.5 {{ $note->tags->contains('name', 'favorite') ? 'text-yellow-400' : 'text-gray-500' }}" fill="{{ $note->tags->contains('name', 'favorite') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                                <form action="{{ route('notes.toggleTag', $note) }}" method="POST" class="toggle-tag-form">
+                                    @csrf
+                                    <input type="hidden" name="tag" value="important">
+                                    <button type="submit" class="p-1 rounded-md hover:bg-white/10 transition-colors">
+                                        <svg class="w-3.5 h-3.5 {{ $note->tags->contains('name', 'important') ? 'text-red-500' : 'text-gray-500' }}" fill="{{ $note->tags->contains('name', 'important') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                @empty
+                    <li>
+                        <p class="px-2 py-1.5 text-sm text-gray-500">No notes found.</p>
+                    </li>
+                @endforelse
+
+                @if ($totalNotes > 8)
+                    <li class="pt-1">
+                        <a href="{{ route('notes.index') }}" class="flex items-center px-2 py-1.5 text-sm text-gray-400 hover:bg-white/5 rounded-md transition-colors duration-150 group">
+                            <svg class="w-4 h-4 mr-3 text-gray-500 group-hover:text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                            </svg>
+                            <span class="group-hover:text-gray-200">View all notes ({{ $totalNotes }})</span>
+                        </a>
+                    </li>
+                @endif
+            </ul>
+        </div>
+    </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('.toggle-tag-form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+    });
+</script>
+
 <style>
-    /* Custom scrollbar for Notion-like appearance */
+    .note-item {
+        position: relative;
+    }
+
+    .note-item .note-actions {
+        display: none;
+        pointer-events: none;
+    }
+
+    .note-item:hover .note-actions {
+        display: flex;
+        pointer-events: auto;
+    }
+
     .scrollbar-thin::-webkit-scrollbar {
         width: 6px;
     }

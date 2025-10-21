@@ -20,11 +20,11 @@
             
 
             <div class="flex h-screen">
-                <aside class="w-1/8 bg-[#191919] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent border-r border-gray-800/50">
+                <aside class="w-56 bg-[#191919] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent border-r border-gray-800/50">
                     @include('layouts.sidebar')
                 </aside>
 
-                <div class="w-7/8 flex flex-col">
+                <div class="flex-grow flex flex-col">
                     <!-- Page Heading -->
                     @if (isset($header))
                         <header class="bg-[#191919] shadow">

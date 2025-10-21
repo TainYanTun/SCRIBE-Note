@@ -173,4 +173,21 @@ class NoteController extends Controller
 
         return view('notes.search', ['notes' => $notes, 'search' => $search]);
     }
+
+    public function toggleTag(Request $request, Note $note)
+    {
+        Gate::authorize('update', $note);
+
+        $validated = $request->validate([
+            'tag' => 'required|string',
+        ]);
+
+        $tagName = $validated['tag'];
+
+        $tag = Tag::firstOrCreate(['name' => $tagName, 'slug' => Str::slug($tagName)]);
+
+        $note->tags()->toggle($tag);
+
+        return back();
+    }
 }
