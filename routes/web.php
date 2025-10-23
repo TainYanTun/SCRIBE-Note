@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\GraphController;
+use App\Http\Controllers\Auth\PasswordController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -46,9 +47,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/settings', [ProfileController::class, 'edit'])->name('profile.settings');
+    Route::patch('/profile/settings', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
 });
 
 require __DIR__.'/auth.php';
