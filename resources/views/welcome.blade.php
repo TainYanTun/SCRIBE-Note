@@ -16,20 +16,18 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen flex bg-[#191919]">
             <!-- Left Side - Hero Section -->
-            <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-pink-600/10 p-12 flex-col justify-between relative overflow-hidden">
+            <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-gray-900 via-blue-900/10 to-gray-900 p-12 flex-col justify-between relative overflow-hidden">
                 <!-- Decorative elements -->
                 <div class="absolute top-0 left-0 w-full h-full opacity-30">
-                    <div class="absolute top-20 left-20 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl"></div>
-                    <div class="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+                    <div class="absolute top-20 left-20 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl"></div>
+                    <div class="absolute bottom-20 right-20 w-96 h-96 bg-blue-700/20 rounded-full blur-3xl"></div>
                 </div>
 
                 <!-- Content -->
                 <div class="relative z-10">
                     <div class="flex items-center gap-3 mb-2">
-                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
+                        <div class="w-6 h-6 rounded-lg flex items-center justify-center">
+                            <img src="{{ asset('lighticon.svg') }}" alt="App Icon" class="w-6 h-6">
                         </div>
                         <h1 class="text-2xl font-bold text-gray-100">{{ config('app.name', 'NotesApp') }}</h1>
                     </div>

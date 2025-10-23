@@ -160,6 +160,12 @@ class NoteController extends Controller
         Gate::authorize('viewAny', Note::class);
 
         $search = $request->query('search');
+        $tags = $request->query('tags', []);
+        $dateStart = $request->query('date_start');
+        $dateEnd = $request->query('date_end');
+        $sortBy = $request->query('sort_by', 'latest'); // Default sort by latest
+        $sortOrder = $request->query('sort_order', 'desc'); // Default sort order desc
+
         $notesQuery = Note::where('user_id', auth()->id());
 
         if ($search) {
@@ -169,9 +175,44 @@ class NoteController extends Controller
             });
         }
 
-        $notes = $notesQuery->latest()->get();
+        if (!empty($tags)) {
+            $notesQuery->whereHas('tags', function ($query) use ($tags) {
+                $query->whereIn('tags.id', $tags);
+            });
+        }
 
-        return view('notes.search', ['notes' => $notes, 'search' => $search]);
+        if ($dateStart) {
+            $notesQuery->whereDate('created_at', '>=', $dateStart);
+        }
+
+        if ($dateEnd) {
+            $notesQuery->whereDate('created_at', '<=', $dateEnd);
+        }
+
+        // Apply sorting
+        if ($sortBy === 'latest') {
+            $notesQuery->latest();
+        } elseif ($sortBy === 'oldest') {
+            $notesQuery->oldest();
+        } elseif ($sortBy === 'title') {
+            $notesQuery->orderBy('title', $sortOrder);
+        } elseif ($sortBy === 'updated_at') {
+            $notesQuery->orderBy('updated_at', $sortOrder);
+        }
+
+        $notes = $notesQuery->paginate(10);
+        $allTags = Tag::all(); // Fetch all available tags
+
+        return view('notes.search', [
+            'notes' => $notes,
+            'search' => $search,
+            'allTags' => $allTags,
+            'selectedTags' => $tags,
+            'dateStart' => $dateStart,
+            'dateEnd' => $dateEnd,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
+        ]);
     }
 
     public function toggleTag(Request $request, Note $note)
