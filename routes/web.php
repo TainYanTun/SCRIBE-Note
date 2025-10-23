@@ -7,7 +7,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\GraphController;
 
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
