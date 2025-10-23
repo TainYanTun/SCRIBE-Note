@@ -1,6 +1,6 @@
 <p align="center">
   <a href="#" target="_blank">
-    <img src="public/logo.svg" width="150" alt="Scribe Logo">
+    <img src="public/icon.svg" width="150" alt="Scribe Logo">
   </a>
 </p>
 
@@ -150,4 +150,4 @@ Contributions are welcome! If you have suggestions or find issues, please open a
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ---
-<p align="center">Made with ❤️ by [Your Name/Team Name]</p>
+<p align="center">Made with ❤️ by Tain Yan Tun</p>
