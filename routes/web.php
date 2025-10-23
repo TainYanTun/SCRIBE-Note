@@ -24,7 +24,17 @@ Route::get('/dashboard', function () {
                                         ->orWhereIn('target_note_id', $userNotesIds)
                                         ->count();
 
-    return view('dashboard', compact('notes', 'totalNotes', 'totalTags', 'allTags', 'totalNoteLinks'));
+    $favoriteNotes = App\Models\Note::where('user_id', auth()->id())
+        ->whereHas('tags', function ($query) {
+            $query->where('name', 'favorite');
+        })->latest()->get();
+
+    $importantNotes = App\Models\Note::where('user_id', auth()->id())
+        ->whereHas('tags', function ($query) {
+            $query->where('name', 'important');
+        })->latest()->get();
+
+    return view('dashboard', compact('notes', 'totalNotes', 'totalTags', 'allTags', 'totalNoteLinks', 'favoriteNotes', 'importantNotes'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {

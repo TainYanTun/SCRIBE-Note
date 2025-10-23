@@ -68,6 +68,63 @@
                 </div>
             </div>
 
+            <!-- Favorites and Important Notes -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- Favorites -->
+                <div class="bg-[#252525] border border-gray-800/50 rounded-lg overflow-hidden">
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800/50">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                            </svg>
+                            <h3 class="text-base font-semibold text-gray-100">Favorites</h3>
+                        </div>
+                    </div>
+                    @if ($favoriteNotes->isEmpty())
+                        <div class="px-6 py-4 text-sm text-gray-500">No favorite notes.</div>
+                    @else
+                        <div class="divide-y divide-gray-800/50">
+                            @foreach ($favoriteNotes as $note)
+                                <a href="{{ route('notes.show', $note) }}" class="flex items-center gap-4 px-6 py-4 hover:bg-[#2a2a2a] transition-colors group">
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">
+                                            {{ $note->title }}
+                                        </h4>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Important -->
+                <div class="bg-[#252525] border border-gray-800/50 rounded-lg overflow-hidden">
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800/50">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                            </svg>
+                            <h3 class="text-base font-semibold text-gray-100">Important</h3>
+                        </div>
+                    </div>
+                    @if ($importantNotes->isEmpty())
+                        <div class="px-6 py-4 text-sm text-gray-500">No important notes.</div>
+                    @else
+                        <div class="divide-y divide-gray-800/50">
+                            @foreach ($importantNotes as $note)
+                                <a href="{{ route('notes.show', $note) }}" class="flex items-center gap-4 px-6 py-4 hover:bg-[#2a2a2a] transition-colors group">
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">
+                                            {{ $note->title }}
+                                        </h4>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </div>
+
             <!-- Recent Notes and Tags Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-[#252525] border border-gray-800/50 rounded-lg overflow-hidden">
