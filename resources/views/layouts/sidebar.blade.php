@@ -8,7 +8,7 @@
         });
     }
     $totalNotes = $notesQuery->count();
-    $notes = $notesQuery->latest()->take(8)->get();
+    $notes = $notesQuery->latest()->take(12)->get();
 @endphp
 
 <div class="flex flex-col h-full bg-[#1d1d1d] border-r border-gray-800">

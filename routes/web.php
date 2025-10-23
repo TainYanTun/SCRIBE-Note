@@ -17,7 +17,7 @@ Route::get('/dashboard', function () {
     $totalTags = $user->tags()->count();
     $allTags = $user->tags()->withCount(['notes' => function ($query) use ($user) {
         $query->where('user_id', $user->id);
-    }])->get();
+    }])->orderBy('notes_count', 'desc')->get();
 
     $userNotesIds = $user->notes()->pluck('id');
     $totalNoteLinks = \App\Models\NoteLink::whereIn('source_note_id', $userNotesIds)
