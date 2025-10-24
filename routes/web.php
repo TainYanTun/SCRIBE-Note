@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('notes', NoteController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::post('/notes/{note}/toggle-tag', [NoteController::class, 'toggleTag'])->name('notes.toggleTag');
     Route::resource('tags', TagController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::get('/notes/{note}/export', [NoteController::class, 'export'])->name('notes.export');
     Route::get('/graph', [GraphController::class, 'index'])->name('graph.index');
 });
 

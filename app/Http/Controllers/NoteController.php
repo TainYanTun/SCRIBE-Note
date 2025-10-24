@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Barryvdh\DomPDF\Facade\Pdf;
+use League\CommonMark\CommonMarkConverter;
 
 class NoteController extends Controller
 {
@@ -230,5 +232,20 @@ class NoteController extends Controller
         $note->tags()->toggle($tag);
 
         return back();
+    }
+
+    public function export(Note $note)
+    {
+        Gate::authorize('view', $note);
+
+        $converter = new \League\CommonMark\CommonMarkConverter();
+        $htmlContent = $converter->convert($note->content);
+
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('notes.export', [
+            'note' => $note,
+            'htmlContent' => $htmlContent,
+        ]);
+        return $pdf->download($note->slug . '.pdf');
     }
 }
