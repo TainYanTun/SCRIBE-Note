@@ -6,7 +6,10 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\GraphController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NoteShareController;
+use App\Http\Controllers\NoteInvitationController;
 use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,8 +46,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/notes/search', [NoteController::class, 'search'])->name('notes.search');
     Route::resource('notes', NoteController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::post('/notes/{note}/toggle-tag', [NoteController::class, 'toggleTag'])->name('notes.toggleTag');
-    Route::get('/notes/{note}/share', [NoteController::class, 'share'])->name('notes.share');
-    Route::post('/notes/{note}/share', [NoteController::class, 'processShare'])->name('notes.processShare');
+    Route::get('/notes/{note}/share', [NoteShareController::class, 'create'])->name('notes.share');
+    Route::post('/notes/{note}/share', [NoteShareController::class, 'store'])->name('notes.processShare');
+    Route::get('/notes/accept-invitation/{token}', [NoteInvitationController::class, 'accept'])->name('notes.acceptInvitation');
     Route::post('/notes/{note}/comments', [CommentController::class, 'store'])->name('notes.comments.store');
     Route::resource('tags', TagController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::get('/notes/{note}/export', [NoteController::class, 'export'])->name('notes.export');
@@ -56,6 +60,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/settings', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
+
+    // Notifications Route
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 });
 
 require __DIR__.'/auth.php';

@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\User;
+use App\Models\NoteInvitation;
+use App\Notifications\NoteSharedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class NoteShareController extends Controller
 {
@@ -31,11 +34,19 @@ class NoteShareController extends Controller
             return back()->with('error', 'You cannot share a note with its owner.');
         }
 
-        $note->sharedWithUsers()->syncWithoutDetaching([
-            $userToShareWith->id => ['permission' => $validated['permission']],
+        // Create an invitation record
+        $invitation = NoteInvitation::create([
+            'note_id' => $note->id,
+            'invited_user_id' => $userToShareWith->id,
+            'sharer_user_id' => auth()->id(),
+            'permission' => $validated['permission'],
+            'token' => Str::random(32),
         ]);
 
-        return back()->with('status', 'Note shared successfully!');
+        // Send notification to the invited user
+        $userToShareWith->notify(new NoteSharedNotification($invitation));
+
+        return back()->with('status', 'Note invitation sent successfully!');
     }
 
     public function update(Request $request, Note $note, User $user)
