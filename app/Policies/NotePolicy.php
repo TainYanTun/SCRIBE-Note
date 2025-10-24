@@ -21,7 +21,7 @@ class NotePolicy
      */
     public function view(User $user, Note $note): bool
     {
-        return $user->id === $note->user_id;
+        return $user->id === $note->user_id || $note->sharedWithUsers->contains($user);
     }
 
     /**
@@ -37,7 +37,7 @@ class NotePolicy
      */
     public function update(User $user, Note $note): bool
     {
-        return $user->id === $note->user_id;
+        return $user->id === $note->user_id || ($note->sharedWithUsers->contains($user) && ($note->sharedWithUsers()->where('user_id', $user->id)->first()->pivot->permission === 'edit'));
     }
 
     /**
@@ -62,5 +62,21 @@ class NotePolicy
     public function forceDelete(User $user, Note $note): bool
     {
         return $user->id === $note->user_id;
+    }
+
+    /**
+     * Determine whether the user can share the model.
+     */
+    public function share(User $user, Note $note): bool
+    {
+        return $user->id === $note->user_id;
+    }
+
+    /**
+     * Determine whether the user can comment on the model.
+     */
+    public function comment(User $user, Note $note): bool
+    {
+        return $user->id === $note->user_id || ($note->sharedWithUsers->contains($user) && ($note->sharedWithUsers()->where('user_id', $user->id)->first()->pivot->permission === 'comment' || $note->sharedWithUsers()->where('user_id', $user->id)->first()->pivot->permission === 'edit'));
     }
 }

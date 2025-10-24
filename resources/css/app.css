@@ -5,6 +5,10 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+body {
+    color: #e9e9e7; /* Default text color for the entire application */
+}
+
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';

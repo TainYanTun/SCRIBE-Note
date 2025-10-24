@@ -38,9 +38,15 @@
                             </svg>
                             Edit
                         </a>
-                        <form action="{{ route('notes.destroy', $note) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this note?');" class="inline">
+                        <a href="{{ route('notes.share', $note) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-600/10 hover:bg-purple-600/20 border border-purple-600/30 rounded-md text-xs text-purple-400 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                            </svg>
+                            Share
+                        </a>
+                        <form method="POST" action="{{ route('notes.destroy', $note) }}" onsubmit="return confirm('Are you sure you want to delete this note?');" class="inline">
                             @csrf
-                            @method('DELETE')
+                            @method('delete')
                             <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-600/10 hover:bg-red-600/20 border border-red-600/30 rounded-md text-xs text-red-400 transition-colors">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -132,6 +138,43 @@
                     </div>
                 </div>
             @endif
+
+            <!-- Comments Section -->
+            <div class="mt-6">
+                <h3 class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-3 px-2">Comments</h3>
+                <div class="bg-[#252525] overflow-hidden shadow-sm sm:rounded-lg border border-gray-800/50 p-6">
+                    @can('comment', $note)
+                        <form method="POST" action="{{ route('notes.comments.store', $note) }}" class="mb-6">
+                            @csrf
+                            <div>
+                                <x-input-label for="comment_content" :value="__('Add a comment')" class="text-gray-400 text-sm" />
+                                <textarea id="comment_content" name="content" class="block mt-1 w-full border-gray-700 bg-gray-900 text-gray-300 focus:border-gray-600 focus:ring-gray-600 rounded-md shadow-sm p-2" rows="3" required>{{ old('content') }}</textarea>
+                                <x-input-error :messages="$errors->get('content')" class="mt-2" />
+                            </div>
+                            <div class="flex items-center justify-end mt-4">
+                                <x-primary-button>
+                                    {{ __('Post Comment') }}
+                                </x-primary-button>
+                            </div>
+                        </form>
+                    @endcan
+
+                    @forelse ($note->comments as $comment)
+                        <div class="border-b border-gray-800/50 pb-4 mb-4 last:border-b-0 last:pb-0 last:mb-0">
+                            <div class="flex items-center gap-3">
+                                <img class="w-8 h-8 rounded-full object-cover" src="{{ $comment->user->profile_photo_path ? asset('storage/' . $comment->user->profile_photo_path) : 'https://ui-avatars.com/api/?name=' . urlencode($comment->user->name) . '&color=7F9CF5&background=EBF4FF' }}" alt="{{ $comment->user->name }}">
+                                <div>
+                                    <p class="text-sm text-gray-400 font-semibold">{{ $comment->user->name }}</p>
+                                    <p class="text-xs text-gray-600">{{ $comment->created_at->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                            <p class="text-gray-300 mt-2">{{ $comment->content }}</p>
+                        </div>
+                    @empty
+                        <p class="text-gray-500 text-sm">No comments yet.</p>
+                    @endforelse
+                </div>
+            </div>
         </div>
     </div>
 

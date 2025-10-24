@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -247,5 +248,38 @@ class NoteController extends Controller
             'htmlContent' => $htmlContent,
         ]);
         return $pdf->download($note->slug . '.pdf');
+    }
+
+    public function share(Note $note)
+    {
+        Gate::authorize('share', $note);
+
+        return view('notes.share', ['note' => $note]);
+    }
+
+    public function processShare(Request $request, Note $note)
+    {
+        Gate::authorize('share', $note);
+
+        $validated = $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'permission' => 'required|in:view,comment,edit',
+        ]);
+
+        $userToShareWith = User::where('email', $validated['email'])->first();
+
+        if (!$userToShareWith) {
+            return back()->withErrors(['email' => 'User with this email not found.']);
+        }
+
+        // Prevent sharing with self
+        if ($userToShareWith->id === Auth::id()) {
+            return back()->withErrors(['email' => 'You cannot share a note with yourself.']);
+        }
+
+        // Attach the note to the user with the specified permission
+        $note->sharedWithUsers()->syncWithoutDetaching([$userToShareWith->id => ['permission' => $validated['permission']]]);
+
+        return redirect()->route('notes.show', $note)->with('status', 'Note shared successfully!');
     }
 }

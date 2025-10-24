@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -52,6 +53,14 @@ class User extends Authenticatable
     public function notes()
     {
         return $this->hasMany(Note::class);
+    }
+
+    /**
+     * Get all of the notes shared with the user.
+     */
+    public function sharedNotes(): BelongsToMany
+    {
+        return $this->belongsToMany(Note::class, 'note_user')->withPivot('permission');
     }
 
     /**

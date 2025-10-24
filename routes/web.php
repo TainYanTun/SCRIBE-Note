@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\GraphController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\PasswordController;
 
 Route::get('/', function () {
@@ -42,6 +43,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/notes/search', [NoteController::class, 'search'])->name('notes.search');
     Route::resource('notes', NoteController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::post('/notes/{note}/toggle-tag', [NoteController::class, 'toggleTag'])->name('notes.toggleTag');
+    Route::get('/notes/{note}/share', [NoteController::class, 'share'])->name('notes.share');
+    Route::post('/notes/{note}/share', [NoteController::class, 'processShare'])->name('notes.processShare');
+    Route::post('/notes/{note}/comments', [CommentController::class, 'store'])->name('notes.comments.store');
     Route::resource('tags', TagController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::get('/notes/{note}/export', [NoteController::class, 'export'])->name('notes.export');
     Route::get('/graph', [GraphController::class, 'index'])->name('graph.index');

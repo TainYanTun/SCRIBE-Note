@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Note extends Model
 {
@@ -46,5 +47,21 @@ class Note extends Model
     public function linkedByNotes(): BelongsToMany
     {
         return $this->belongsToMany(Note::class, 'note_links', 'target_note_id', 'source_note_id');
+    }
+
+    /**
+     * The users that this note is shared with.
+     */
+    public function sharedWithUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'note_user')->withPivot('permission');
+    }
+
+    /**
+     * Get all of the comments for the note.
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }
