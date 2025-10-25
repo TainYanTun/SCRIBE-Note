@@ -167,7 +167,7 @@ Contributions are welcome! If you have suggestions or find issues, please open a
 
 ## 📄 License
 
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](LICENSE).
 
 ---
 <p align="center">Made with ❤️ by Tain Yan Tun</p>
