@@ -35,6 +35,12 @@
                                         <h4 class="text-base font-semibold text-gray-100 group-hover:text-white transition-colors line-clamp-2 mb-1">
                                             {{ $note->title }}
                                         </h4>
+                                        @if ($note->user_id !== Auth::id())
+                                            <div class="flex items-center text-xs text-gray-500 mt-1">
+                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.516 3.832a3 3 0 00.617-.245M8.684 10.658L15.2 6.826a3 3 0 01.617-.245m0 0a3 3 0 105.329 2.538 3 3 0 00-5.329-2.538m0 0L8.684 10.658"></path></svg>
+                                                Shared by: <span class="font-semibold ml-1">{{ $note->user->name }}</span>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
 

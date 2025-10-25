@@ -21,7 +21,10 @@ class NoteController extends Controller
     {
         Gate::authorize('viewAny', Note::class);
 
-        $notes = $request->user()->notes()->latest()->get();
+        $ownedNotes = $request->user()->notes()->latest()->get();
+        $sharedNotes = $request->user()->sharedNotes()->with('user')->latest()->get();
+
+        $notes = $ownedNotes->merge($sharedNotes)->sortByDesc('created_at');
 
         $groupedNotes = $notes->groupBy(function ($note) {
             return $note->created_at->format('Y-m-d');
