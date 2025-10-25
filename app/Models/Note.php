@@ -18,6 +18,7 @@ class Note extends Model
         'slug',
         'content',
         'user_id',
+        'folder_id',
     ];
 
     public function user(): BelongsTo
@@ -63,5 +64,10 @@ class Note extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function folder(): BelongsTo
+    {
+        return $this->belongsTo(Folder::class);
     }
 }

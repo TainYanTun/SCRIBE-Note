@@ -76,6 +76,29 @@
                             <x-input-error :messages="$errors->get('tags')" class="mt-2" />
                         </div>
 
+                        <!-- Folder -->
+                        <div>
+                            <x-input-label for="folder_id" :value="__('Folder')" class="text-gray-400 text-sm font-medium mb-2" />
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                                    </svg>
+                                </div>
+                                <select 
+                                    id="folder_id" 
+                                    name="folder_id" 
+                                    class="block w-full pl-10 pr-3 py-2.5 bg-[#2c2c2c] border-transparent text-gray-100 focus:bg-[#323232] focus:ring-1 focus:ring-gray-600 focus:border-transparent rounded-lg shadow-sm transition-colors scrollbar-thin"
+                                >
+                                    <option value="">None</option>
+                                    @foreach($folders as $folder)
+                                        <option value="{{ $folder->id }}" class="py-2">{{ $folder->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <x-input-error :messages="$errors->get('folder_id')" class="mt-2" />
+                        </div>
+
                         <!-- Content -->
                         <div>
                             <x-input-label for="content" :value="__('Content')" class="text-gray-400 text-sm font-medium mb-2" />

@@ -44,9 +44,11 @@ class NoteController extends Controller
         $user = Auth::user();
         $notes = $user->notes()->latest()->get();
         $tags = Tag::all(); // Fetch all available tags
+        $folders = $user->folders()->get();
         return view('notes.create', [
             'notes' => $notes,
             'tags' => $tags,
+            'folders' => $folders,
         ]);
     }
 
@@ -64,12 +66,14 @@ class NoteController extends Controller
             'linked_notes.*' => 'integer|exists:notes,id',
             'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',
+            'folder_id' => 'nullable|integer|exists:folders,id',
         ]);
 
         $note = $request->user()->notes()->create([
             'title' => $validated['title'],
             'slug' => Str::slug($validated['title']),
             'content' => $validated['content'] ?? '',
+            'folder_id' => $validated['folder_id'] ?? null,
         ]);
 
         if (isset($validated['linked_notes'])) {
@@ -106,6 +110,7 @@ class NoteController extends Controller
         $linkedNotes = $note->linkedNotes->pluck('id')->toArray();
         $allTags = Tag::all(); // Fetch all available tags
         $noteTags = $note->tags->pluck('id')->toArray(); // Get IDs of tags currently associated with the note
+        $folders = $user->folders()->get();
 
         return view('notes.edit', [
             'note' => $note,
@@ -113,6 +118,7 @@ class NoteController extends Controller
             'linkedNotes' => $linkedNotes,
             'allTags' => $allTags,
             'noteTags' => $noteTags,
+            'folders' => $folders,
         ]);
     }
 
@@ -130,12 +136,14 @@ class NoteController extends Controller
             'linked_notes.*' => 'integer|exists:notes,id',
             'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',
+            'folder_id' => 'nullable|integer|exists:folders,id',
         ]);
 
         $note->update([
             'title' => $validated['title'],
             'slug' => Str::slug($validated['title']),
             'content' => $validated['content'] ?? '',
+            'folder_id' => $validated['folder_id'] ?? null,
         ]);
 
         if (isset($validated['linked_notes'])) {

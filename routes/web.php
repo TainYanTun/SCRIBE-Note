@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FolderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NoteController;
@@ -53,6 +54,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('tags', TagController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::get('/notes/{note}/export', [NoteController::class, 'export'])->name('notes.export');
     Route::get('/graph', [GraphController::class, 'index'])->name('graph.index');
+
+    Route::get('/folders/{folder?}', [FolderController::class, 'index'])->name('folders.index');
+    Route::resource('folders', FolderController::class)->only(['store', 'update', 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

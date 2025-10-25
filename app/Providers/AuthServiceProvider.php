@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Folder;
+use App\Policies\FolderPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Note;
 use App\Policies\NotePolicy;
@@ -15,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Note::class => NotePolicy::class,
+        Folder::class => FolderPolicy::class,
     ];
 
     /**
