@@ -39,15 +39,25 @@ This project was developed as a final university submission, showcasing a compre
 ## 💻 Technologies Used
 
 *   **Backend**:
-    *   [Laravel](https://laravel.com/) (PHP Framework)
+    *   [Laravel](https://laravel.com/) ^12.0 (PHP Framework)
     *   [Eloquent ORM](https://laravel.com/docs/eloquent)
 *   **Frontend**:
     *   [Blade Templates](https://laravel.com/docs/blade)
     *   [Tailwind CSS](https://tailwindcss.com/) (Utility-First CSS Framework)
     *   [Vite](https://vitejs.dev/) (Frontend Build Tool)
+    *   [Alpine.js](https://alpinejs.dev/) (JavaScript Framework)
     *   JavaScript
+    *   Axios (HTTP Client)
 *   **Database**:
     *   SQLite (default, configurable)
+*   **Build Tools**:
+    *   [Composer](https://getcomposer.org/) (PHP Dependency Manager)
+    *   [npm](https://www.npmjs.com/) (Node.js Package Manager)
+    *   [Vite](https://vitejs.dev/) (Frontend Build Tool)
+    *   [concurrently](https://www.npmjs.com/package/concurrently) (Run multiple commands concurrently)
+    *   [laravel-vite-plugin](https://github.com/laravel/vite-plugin) (Laravel Vite Integration)
+    *   [tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin) (Tailwind CSS Typography Plugin)
+    *   [tailwindcss/vite](https://tailwindcss.com/docs/installation#vite) (Tailwind CSS Vite Plugin)
 *   **Other**:
     *   EasyMDE (Markdown Editor)
     *   Marked.js (Markdown Parser)
@@ -58,7 +68,7 @@ Follow these steps to get Scribe up and running on your local machine.
 
 ### Prerequisites
 
-*   PHP >= 8.1
+*   PHP >= 8.2
 *   Composer
 *   Node.js & npm (or Yarn)
 
@@ -106,12 +116,22 @@ Follow these steps to get Scribe up and running on your local machine.
     # OR npm run build for production
     ```
 
-9.  **Start the development server:**
+9.  **Start the development server (all-in-one):**
+    ```bash
+    composer dev
+    ```
+    This command will concurrently run the Laravel development server, queue worker, logs, and Vite for frontend assets.
+
+    Alternatively, you can run them separately:
     ```bash
     php artisan serve
     ```
-
     The application will be accessible at `http://127.0.0.1:8000`.
+
+10. **Run Tests:**
+    ```bash
+    composer test
+    ```
 
 ## 🚀 Usage
 
