@@ -431,5 +431,6 @@
         text-decoration: line-through;
         color: #9ca3af;
     }
+    
 </style>
 </x-app-layout>
