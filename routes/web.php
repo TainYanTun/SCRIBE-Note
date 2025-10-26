@@ -11,6 +11,9 @@ use App\Http\Controllers\NoteShareController;
 use App\Http\Controllers\NoteInvitationController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\NotificationController;
+use App\Models\Note;
+use App\Models\NoteLink;
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,7 +43,9 @@ Route::get('/dashboard', function () {
             $query->where('name', 'important');
         })->latest()->get();
 
-    return view('dashboard', compact('notes', 'totalNotes', 'totalTags', 'allTags', 'totalNoteLinks', 'favoriteNotes', 'importantNotes'));
+    $notifications = $user->notifications()->whereNull('read_at')->latest()->take(5)->get();
+
+    return view('dashboard', compact('notes', 'totalNotes', 'totalTags', 'allTags', 'totalNoteLinks', 'favoriteNotes', 'importantNotes', 'notifications'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
