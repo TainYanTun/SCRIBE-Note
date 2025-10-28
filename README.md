@@ -1,6 +1,12 @@
 <p align="center">
   <a href="#" target="_blank">
-    <img src="public/scribe.svg" width="450" height="200" alt="Scribe Logo">
+    <img src="public/scribe.svg" width="400" height="200" alt="Scribe Logo">
+  </a>
+</p>
+
+<p align="center">
+  <a href="#" target="_blank">
+    <img src="public/banner.png" width="900" height="900" alt="Scribe Logo">
   </a>
 </p>
 
