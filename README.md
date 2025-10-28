@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="#" target="_blank">
-    <img src="public/banner.png" width="900" height="900" alt="Scribe Logo">
+    <img src="public/banner.png" width="700" height="700" alt="Scribe Logo">
   </a>
 </p>
 
