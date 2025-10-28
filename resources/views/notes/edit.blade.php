@@ -13,6 +13,20 @@
                         @csrf
                         @method('patch')
 
+                        <input type="hidden" name="version" value="{{ $note->version }}">
+                        
+                        @if ($errors->has('version'))
+                            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                                <div class="flex items-center">
+                                    <div class="py-1"><svg class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
+                                    <div>
+                                        <p class="font-bold">Conflict Detected!</p>
+                                        <p class="text-sm">{{ $errors->first('version') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                         <!-- Title -->
                         <div>
                             <x-input-label for="title" :value="__('Title')" class="text-gray-400 text-sm font-medium mb-2" />
@@ -119,7 +133,7 @@
                             <a href="{{ route('notes.show', $note) }}" class="text-sm text-gray-500 hover:text-gray-400 transition-colors">
                                 Cancel
                             </a>
-                            <x-primary-button class="bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800 focus:ring-blue-500 px-6 py-2.5 transition-colors">
+                            <x-primary-button id="save-changes-button" class="bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800 focus:ring-blue-500 px-6 py-2.5 transition-colors">
                                 {{ __('Save Changes') }}
                             </x-primary-button>
                         </div>
@@ -163,6 +177,15 @@
                 enabled: false
             }
         });
+
+        // Disable save button if optimistic locking error is present
+        const saveButton = document.getElementById('save-changes-button');
+        @if($errors->has('version'))
+            if (saveButton) {
+                saveButton.disabled = true;
+                saveButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        @endif
     });
 </script>
 

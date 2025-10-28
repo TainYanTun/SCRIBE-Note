@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Barryvdh\DomPDF\Facade\Pdf;
 use League\CommonMark\CommonMarkConverter;
+use Illuminate\Support\Facades\Log;
 
 class NoteController extends Controller
 {
@@ -137,7 +138,15 @@ class NoteController extends Controller
             'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',
             'folder_id' => 'nullable|integer|exists:folders,id',
+            'version' => 'required|integer',
         ]);
+
+        // Optimistic Locking Check
+        Log::info('Note Update: Request Version: ' . $request->input('version') . ', DB Version: ' . $note->version);
+        if ($request->input('version') != $note->version) {
+            Log::warning('Optimistic Locking Conflict for Note ID: ' . $note->id . '. Request Version: ' . $request->input('version') . ', DB Version: ' . $note->version);
+            return redirect()->back()->withErrors(['version' => 'This note has been updated by someone else. Please copy your changes, refresh the page to get the latest version, and then re-apply them.'])->withInput();
+        }
 
         $note->update([
             'title' => $validated['title'],
@@ -145,6 +154,9 @@ class NoteController extends Controller
             'content' => $validated['content'] ?? '',
             'folder_id' => $validated['folder_id'] ?? null,
         ]);
+        Log::info('Note ID: ' . $note->id . ' Version before increment: ' . $note->version);
+        $note->increment('version'); // Increment the version using Eloquent's increment method
+        Log::info('Note ID: ' . $note->id . ' Version after increment: ' . $note->version);
 
         if (isset($validated['linked_notes'])) {
             $note->linkedNotes()->sync($validated['linked_notes']);

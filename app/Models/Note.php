@@ -19,6 +19,7 @@ class Note extends Model
         'content',
         'user_id',
         'folder_id',
+        'version',
     ];
 
     public function user(): BelongsTo
