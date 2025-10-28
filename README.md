@@ -4,9 +4,6 @@
   </a>
 </p>
 
-<h1 align="center">Scribe: Your Personal Knowledge Graph</h1>
-
-
 <p align="center">
   <a href="#" target="_blank">
     <img src="public/banner.png" width="700" height="700" alt="Scribe Logo">
