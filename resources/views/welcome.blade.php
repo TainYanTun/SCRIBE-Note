@@ -26,8 +26,8 @@
                 <!-- Content -->
                 <div class="relative z-10">
                     <div class="flex items-center gap-3 mb-2">
-                        <div class="w-6 h-6 rounded-lg flex items-center justify-center">
-                            <img src="{{ asset('lighticon.svg') }}" alt="App Icon" class="w-6 h-6">
+                        <div class="w-10 h-10 rounded-lg flex items-center justify-center">
+                            <img src="{{ asset('lighticon.svg') }}" alt="App Icon" class="w-10 h-10">
                         </div>
                         <h1 class="text-2xl font-bold text-gray-100">{{ config('app.name', 'NotesApp') }}</h1>
                     </div>
