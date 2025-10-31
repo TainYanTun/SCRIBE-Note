@@ -10,7 +10,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', 'sans-serif'],
+                sans: ['Nunito', 'sans-serif'],
             },
             typography: ({ theme }) => ({
                 DEFAULT: {

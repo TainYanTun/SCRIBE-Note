@@ -16,7 +16,7 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen flex bg-[#191919]">
             <!-- Left Side - Hero Section -->
-            <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-gray-900 via-blue-900/10 to-gray-900 p-12 flex-col justify-between relative overflow-hidden">
+            <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-gray-900 via-blue-800/30 to-purple-900/20 p-12 flex-col justify-between relative overflow-hidden">
                 <!-- Decorative elements -->
                 <div class="absolute top-0 left-0 w-full h-full opacity-30">
                     <div class="absolute top-20 left-20 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl"></div>
