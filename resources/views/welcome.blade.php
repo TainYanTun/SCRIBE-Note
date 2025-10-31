@@ -220,7 +220,7 @@
                                             type="text" 
                                             name="name" 
                                             :value="old('name')" 
-                                            placeholder="John Doe"
+                                            placeholder="Your name"
                                             required 
                                             autofocus 
                                             autocomplete="name" 
