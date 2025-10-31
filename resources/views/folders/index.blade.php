@@ -66,14 +66,7 @@
 
                     <!-- Folders Section -->
                     <div>
-                        <div class="flex items-center gap-2 mb-4">
-                            <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
-                            </svg>
-                            <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Folders</h3>
-                        </div>
-
-                        @forelse ($folders as $subFolder)
+                        @foreach ($folders as $subFolder)
                             <div class="group flex items-center justify-between p-4 mb-2 bg-transparent hover:bg-white/5 rounded-lg transition-all duration-150 border border-transparent hover:border-gray-800">
                                 <a 
                                     href="{{ route('folders.index', ['folder' => $subFolder->id]) }}" 
@@ -106,42 +99,13 @@
                                     </div>
                                 </div>
                             </div>
-                        @empty
-                            @if ($folder && $notes->isEmpty())
-                                <div class="text-center py-12">
-                                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-800/50 flex items-center justify-center">
-                                        <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="text-gray-500 text-sm font-medium mb-1">No folders or notes yet</p>
-                                    <p class="text-gray-600 text-xs">Create your first folder or note to get organized</p>
-                                </div>
-                            @elseif (!$folder)
-                                <div class="text-center py-12">
-                                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-800/50 flex items-center justify-center">
-                                        <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="text-gray-500 text-sm font-medium mb-1">No folders yet</p>
-                                    <p class="text-gray-600 text-xs">Create your first folder to get organized</p>
-                                </div>
-                            @endif
-                        @endforelse
+                        @endforeach
                     </div>
 
                     @if ($folder)
                         <!-- Notes Section -->
-                        <div class="mt-8">
-                            <div class="flex items-center gap-2 mb-4">
-                                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Notes in {{ $folder->name }}</h3>
-                            </div>
-
-                            @forelse ($notes as $note)
+                        <div>
+                            @foreach ($notes as $note)
                                 <a 
                                     href="{{ route('notes.show', $note) }}" 
                                     class="group flex items-center justify-between p-4 mb-2 bg-transparent hover:bg-white/5 rounded-lg transition-all duration-150 border border-transparent hover:border-gray-800"
@@ -165,17 +129,19 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                     </svg>
                                 </a>
-                            @empty
-                                <div class="text-center py-12">
-                                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-800/50 flex items-center justify-center">
-                                        <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="text-gray-500 text-sm font-medium mb-1">No notes in this folder yet</p>
-                                    <p class="text-gray-600 text-xs">Create a new note or move an existing one here</p>
-                                </div>
-                            @endforelse
+                            @endforeach
+                        </div>
+                    @endif
+
+                    @if ($folders->isEmpty() && $notes->isEmpty())
+                        <div class="text-center py-12">
+                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-800/50 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+                                </svg>
+                            </div>
+                            <p class="text-gray-500 text-sm font-medium mb-1">No folders or notes here yet</p>
+                            <p class="text-gray-600 text-xs">Create your first folder or note to get organized</p>
                         </div>
                     @endif
                 </div>

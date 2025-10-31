@@ -28,7 +28,7 @@
                 <div class="bg-[#252525] border border-gray-800/50 rounded-lg p-5">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Total Notes</p>
+                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Your Notes</p>
                             <p class="text-3xl font-bold text-gray-100">{{ $totalNotes }}</p>
                         </div>
                         <div class="w-12 h-12 bg-blue-600/10 rounded-lg flex items-center justify-center">
@@ -43,7 +43,7 @@
                 <div class="bg-[#252525] border border-gray-800/50 rounded-lg p-5">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Effected Tags</p>
+                            <p class="text-xs uppercase tracking-wider text-gray-600 font-semibold mb-1">Attached Tags</p>
                             <p class="text-3xl font-bold text-gray-100">{{ $totalTags }}</p>
                         </div>
                         <div class="w-12 h-12 bg-green-600/10 rounded-lg flex items-center justify-center">
