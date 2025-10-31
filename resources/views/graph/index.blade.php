@@ -1,30 +1,30 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-100 leading-tight" style="font-family: 'Inter', 'DM Sans', system-ui, -apple-system, sans-serif;">
+        <h2 class="font-semibold text-xl text-gray-100 leading-tight">
             {{ __('Graph View') }}
         </h2>
     </x-slot>
 
-    <div class="py-12" style="background-color: #191919; font-family: 'Inter', 'DM Sans', system-ui, -apple-system, sans-serif;">
+    <div class="py-12" style="background-color: #191919;">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Info Card -->
-            <div class="overflow-hidden shadow-lg sm:rounded-xl mb-6 transition-all duration-300 hover:shadow-2xl" style="background: linear-gradient(135deg, rgba(31, 31, 31, 0.95) 0%, rgba(25, 25, 25, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.06); backdrop-filter: blur(10px);">
+            <div class="overflow-hidden shadow-lg sm:rounded-xl mb-6" style="background: rgba(31, 31, 31, 0.95); border: 1px solid rgba(255, 255, 255, 0.06);">
                 <div class="p-6">
                     <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.15) 0%, rgba(147, 51, 234, 0.15) 100%);">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center" style="background: rgba(96, 165, 250, 0.15);">
                             <svg class="w-5 h-5" style="color: #60A5FA;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <div style="color: #B4B4B4; font-size: 14px; line-height: 1.7; flex: 1;">
-                            <p>This graph view provides a visual representation of your notes and their connections. Each box in the graph represents a note, and the lines connecting them represent the links between your notes. You can click on a note to navigate to its page. Use the filter to show notes with a specific tag, and click the fullscreen button to expand the graph.</p>
+                        <div style="color: #B4B4B4; font-size: 14px; line-height: 1.7;">
+                            <p>This graph view provides a visual representation of your notes and their connections. Each box represents a note, and lines show the links between notes. Click on a note to navigate to its page. Use the filter to show notes with a specific tag.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Graph Card -->
-            <div class="overflow-hidden shadow-lg sm:rounded-xl transition-all duration-300" style="background: linear-gradient(135deg, rgba(31, 31, 31, 0.95) 0%, rgba(25, 25, 25, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.06); backdrop-filter: blur(10px);">
+            <div class="overflow-hidden shadow-lg sm:rounded-xl" style="background: rgba(31, 31, 31, 0.95); border: 1px solid rgba(255, 255, 255, 0.06);">
                 <div class="p-6">
                     @if($message)
                         <div class="mb-6 p-4 rounded-lg" style="background: rgba(96, 165, 250, 0.1); border: 1px solid rgba(96, 165, 250, 0.2); color: #93C5FD;">
@@ -44,17 +44,17 @@
                         <div class="flex items-center gap-3 w-full lg:w-auto">
                             <div class="flex items-center gap-2 flex-1 lg:flex-initial" style="color: #B4B4B4; font-size: 13px;">
                                 <label for="tag-filter" class="text-xs font-medium whitespace-nowrap">Filter:</label>
-                                <select id="tag-filter" class="rounded-lg transition-all duration-200 flex-1 lg:w-auto" style="background: rgba(47, 47, 47, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); color: #E3E3E3; padding: 8px 12px; font-size: 13px; cursor: pointer; outline: none; min-width: 140px;">
+                                <select id="tag-filter" class="rounded-lg flex-1 lg:w-auto" style="background: rgba(47, 47, 47, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); color: #E3E3E3; padding: 8px 12px; font-size: 13px; min-width: 140px;">
                                     <option value="all">All Tags</option>
                                 </select>
                             </div>
-                            <button id="reset-view-btn" class="px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 whitespace-nowrap" style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.12) 0%, rgba(147, 51, 234, 0.12) 100%); color: #93C5FD; border: 1px solid rgba(96, 165, 250, 0.2); font-size: 13px; font-weight: 500;">
+                            <button id="reset-view-btn" class="px-4 py-2 rounded-lg flex items-center gap-2 whitespace-nowrap" style="background: rgba(96, 165, 250, 0.12); color: #93C5FD; border: 1px solid rgba(96, 165, 250, 0.2); font-size: 13px;">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                                 </svg>
                                 <span>Reset View</span>
                             </button>
-                            <button id="fullscreen-btn" class="px-4 py-2 rounded-lg transition-all duration-200 flex items-center gap-2 whitespace-nowrap" style="background: linear-gradient(135deg, rgba(96, 165, 250, 0.12) 0%, rgba(147, 51, 234, 0.12) 100%); color: #93C5FD; border: 1px solid rgba(96, 165, 250, 0.2); font-size: 13px; font-weight: 500;">
+                            <button id="fullscreen-btn" class="px-4 py-2 rounded-lg flex items-center gap-2 whitespace-nowrap" style="background: rgba(96, 165, 250, 0.12); color: #93C5FD; border: 1px solid rgba(96, 165, 250, 0.2); font-size: 13px;">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
                                 </svg>
@@ -64,7 +64,7 @@
                     </div>
 
                     <!-- Graph Container -->
-                    <div id="graph" class="transition-all duration-500" style="height: 600px; background: linear-gradient(135deg, rgba(25, 25, 25, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);"></div>
+                    <div id="graph" style="height: 600px; background: rgba(25, 25, 25, 0.8); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);"></div>
                     
                     <!-- Graph Info Panel -->
                     <div id="graph-info" class="mt-4 p-4 rounded-lg" style="background: rgba(47, 47, 47, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); color: #B4B4B4; font-size: 13px; display: none;">
@@ -87,12 +87,6 @@
 
     @push('scripts')
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            font-family: 'Inter', 'DM Sans', system-ui, -apple-system, sans-serif;
-        }
-
         #graph.fullscreen {
             position: fixed;
             top: 0;
@@ -100,34 +94,11 @@
             width: 100vw;
             height: 100vh;
             z-index: 9999;
-            background: linear-gradient(135deg, rgba(25, 25, 25, 0.98) 0%, rgba(20, 20, 20, 1) 100%);
+            background: rgba(25, 25, 25, 0.98);
             border-radius: 0;
             border: none;
-            box-shadow: none;
         }
         
-        #fullscreen-btn:hover, #reset-view-btn:hover {
-            background: linear-gradient(135deg, rgba(96, 165, 250, 0.2) 0%, rgba(147, 51, 234, 0.2) 100%) !important;
-            border-color: rgba(96, 165, 250, 0.3) !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
-        }
-
-        #fullscreen-btn:active, #reset-view-btn:active {
-            transform: translateY(0);
-        }
-        
-        #tag-filter:hover {
-            background: rgba(47, 47, 47, 0.8) !important;
-            border-color: rgba(255, 255, 255, 0.12) !important;
-        }
-
-        #tag-filter:focus {
-            outline: none;
-            border-color: rgba(96, 165, 250, 0.3) !important;
-            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
-        }
-
         /* Legend Tag Pills */
         .legend-tag-pill {
             display: inline-flex;
@@ -137,74 +108,18 @@
             border-radius: 20px;
             background: rgba(47, 47, 47, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            cursor: default;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .legend-tag-pill:hover {
-            background: rgba(47, 47, 47, 0.7);
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
         }
 
         .legend-tag-dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .legend-tag-dot::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 50%;
-            background: inherit;
-            opacity: 0.3;
-            filter: blur(4px);
-            transition: opacity 0.25s ease;
-        }
-
-        .legend-tag-pill:hover .legend-tag-dot::before {
-            opacity: 0.6;
         }
 
         .legend-tag-text {
             font-size: 12px;
-            font-weight: 500;
             color: #D1D5DB;
-            transition: color 0.25s ease;
-        }
-
-        .legend-tag-pill:hover .legend-tag-text {
-            color: #F3F4F6;
-        }
-
-        /* Custom Scrollbar */
-        #legend::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        #legend::-webkit-scrollbar-track {
-            background: rgba(47, 47, 47, 0.3);
-            border-radius: 10px;
-        }
-
-        #legend::-webkit-scrollbar-thumb {
-            background: rgba(96, 165, 250, 0.3);
-            border-radius: 10px;
-        }
-
-        #legend::-webkit-scrollbar-thumb:hover {
-            background: rgba(96, 165, 250, 0.5);
-        }
-
-        /* Smooth transitions */
-        button, select, .legend-tag-pill {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Node tooltip styling */
@@ -213,22 +128,7 @@
             border: 1px solid rgba(96, 165, 250, 0.3) !important;
             border-radius: 8px !important;
             color: #E3E3E3 !important;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-            font-size: 13px !important;
             padding: 8px 12px !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-            backdrop-filter: blur(10px) !important;
-        }
-
-        /* Highlight animation */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .highlight-node {
-            animation: pulse 1.5s infinite;
         }
     </style>
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
@@ -238,28 +138,12 @@
             var edges_data = JSON.parse('{!! $edges_json !!}');
             var all_tags_data = JSON.parse('{!! $all_tags_json !!}');
 
-            // Enhanced color palette with 20 distinct, sophisticated colors for dark theme
+            // Color palette for tags
             const colorPalette = [
-                '#60A5FA', // Soft Blue
-                '#34D399', // Mint Green
-                '#F472B6', // Rose Pink
-                '#A78BFA', // Lavender Purple
-                '#FBBF24', // Warm Amber
-                '#F87171', // Coral Red
-                '#2DD4BF', // Teal
-                '#FB923C', // Soft Orange
-                '#C084FC', // Bright Purple
-                '#4ADE80', // Emerald
-                '#818CF8', // Indigo
-                '#FB7185', // Pink Rose
-                '#10B981', // Green
-                '#8B5CF6', // Violet
-                '#F59E0B', // Amber
-                '#EF4444', // Red
-                '#06B6D4', // Cyan
-                '#EC4899', // Hot Pink
-                '#6366F1', // Blue Indigo
-                '#14B8A6'  // Turquoise
+                '#60A5FA', '#34D399', '#F472B6', '#A78BFA', '#FBBF24',
+                '#F87171', '#2DD4BF', '#FB923C', '#C084FC', '#4ADE80',
+                '#818CF8', '#FB7185', '#10B981', '#8B5CF6', '#F59E0B',
+                '#EF4444', '#06B6D4', '#EC4899', '#6366F1', '#14B8A6'
             ];
             
             const tagColors = {};
@@ -276,7 +160,7 @@
 
             notes_data.forEach(note => {
                 const isIsolated = !connectedNodeIds.has(note.id);
-                const baseOpacity = isIsolated ? 0.5 : 0.9; // Dimmed for isolated nodes
+                const baseOpacity = isIsolated ? 0.5 : 0.9;
                 
                 if (note.tags && note.tags.length > 0) {
                     const tagColor = tagColors[note.tags[0]];
@@ -288,8 +172,8 @@
                             border: tagColor
                         },
                         hover: {
-                            background: 'rgba(40, 40, 40, 0.95)',
-                            border: tagColor
+                            background: 'rgba(96, 165, 250, 0.3)', // A blueish tint
+                            border: '#93C5FD' // A brighter blue
                         }
                     };
                     note.opacity = baseOpacity;
@@ -297,8 +181,7 @@
                     note.borderWidthSelected = 3;
                     note.font = {
                         color: isIsolated ? '#A0A0A0' : '#E3E3E3',
-                        size: 14,
-                        face: 'Inter, system-ui, -apple-system, sans-serif'
+                        size: 14
                     };
                 } else {
                     note.color = {
@@ -318,8 +201,7 @@
                     note.borderWidthSelected = 3;
                     note.font = {
                         color: isIsolated ? '#A0A0A0' : '#E3E3E3',
-                        size: 14,
-                        face: 'Inter, system-ui, -apple-system, sans-serif'
+                        size: 14
                     };
                 }
             });
@@ -327,7 +209,7 @@
             const legendContainer = document.getElementById('legend');
             const filterSelect = document.getElementById('tag-filter');
 
-            // Create legend with enhanced styling
+            // Create legend
             for (const tag in tagColors) {
                 const legendItem = document.createElement('div');
                 legendItem.className = 'legend-tag-pill';
@@ -368,21 +250,13 @@
                     },
                     font: {
                         color: '#E3E3E3',
-                        size: 14,
-                        face: 'Inter, system-ui, -apple-system, sans-serif'
+                        size: 14
                     },
                     borderWidth: 2,
                     borderWidthSelected: 3,
                     margin: 12,
                     shapeProperties: {
                         borderRadius: 8
-                    },
-                    shadow: {
-                        enabled: true,
-                        color: 'rgba(0, 0, 0, 0.4)',
-                        size: 8,
-                        x: 0,
-                        y: 2
                     }
                 },
                 edges: {
@@ -396,28 +270,21 @@
                         enabled: true,
                         type: 'continuous',
                         roundness: 0.5
-                    },
-                    shadow: {
-                        enabled: true,
-                        color: 'rgba(0, 0, 0, 0.2)',
-                        size: 4,
-                        x: 0,
-                        y: 1
                     }
                 },
                 physics: {
                     solver: 'forceAtlas2Based',
                     forceAtlas2Based: {
-                        gravitationalConstant: -250, // Further reduced repulsion to bring networks closer
+                        gravitationalConstant: -150, // Further reduced repulsion to bring networks closer
                         centralGravity: 0.015, // Increased central gravity to make the graph denser
                         springConstant: 0.08,
-                        springLength: 110, // Reduced spring length to pull connected nodes closer
+                        springLength: 80, // Reduced spring length to pull connected nodes closer
                         damping: 0.4,
                         avoidOverlap: 1 // Actively avoid node overlap
                     },
                     stabilization: {
                         enabled: true,
-                        iterations: 100,
+                        iterations: 1000,
                         updateInterval: 25,
                         fit: true
                     }
@@ -451,23 +318,16 @@
 
             network.on("dragStart", function (params) {
                 if (params.nodes.length > 0) {
-                    network.setOptions({ physics: true }); // Temporarily enable physics
+                    network.setOptions({ physics: true });
                     const nodeId = params.nodes[0];
                     const connectedNodes = network.getConnectedNodes(nodeId);
                     draggedNodeAndConnections = [...connectedNodes, nodeId];
-
-
                 }
             });
 
             network.on("dragEnd", function (params) {
-                const updateArray = [];
-                draggedNodeAndConnections.forEach(id => {
-                    updateArray.push({ id: id, fixed: {x:false, y:false} }); // Unfix both x and y
-                });
-                nodes.update(updateArray);
-                draggedNodeAndConnections = []; // Clear the array
-                network.setOptions({ physics: false }); // Disable physics after drag
+                draggedNodeAndConnections = [];
+                network.setOptions({ physics: false });
             });
 
             filterSelect.addEventListener('change', (event) => {
@@ -526,8 +386,11 @@
                 if (params.nodes.length > 0) {
                     var nodeId = params.nodes[0];
                     var node = nodes.get(nodeId);
-                    
-                    // Show node info panel
+
+                    // Redirect to the note's show page
+                    window.location.href = `/notes/${node.id}`;
+
+                    // Show node info panel (existing functionality, will keep)
                     const infoPanel = document.getElementById('graph-info');
                     const nodeTitle = document.getElementById('selected-node-title');
                     const nodeDetails = document.getElementById('selected-node-details');
@@ -550,7 +413,6 @@
                     
                     nodeDetails.innerHTML = details;
                     infoPanel.style.display = 'block';
-                    
                 } else {
                     // Clicked on empty space, hide info panel
                     document.getElementById('graph-info').style.display = 'none';

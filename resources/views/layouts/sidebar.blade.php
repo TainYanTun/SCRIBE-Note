@@ -110,20 +110,7 @@
             {{ __('Create Note') }}
         </a>
 
-        <!-- Special Tags List -->
-        <div class="space-y-0.5 mb-6">
-            <div class="text-xs text-gray-500 uppercase tracking-wider px-2 py-1.5 font-semibold">
-                Special Tags
-            </div>
-            @foreach ($specialTags as $tag)
-                <a href="{{ route('tags.show', $tag) }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
-                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                    </svg>
-                    {{ $tag->name }}
-                </a>
-            @endforeach
-        </div>
+
 
         <!-- Notes List -->
         <div class="space-y-0.5 flex-grow min-h-0 flex flex-col">
