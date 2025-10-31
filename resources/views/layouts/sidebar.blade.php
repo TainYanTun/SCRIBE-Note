@@ -176,6 +176,21 @@
                 @endif
             </ul>
         </div>
+
+        <!-- Help Link -->
+        <div class="mt-auto pt-3 border-t border-gray-800/50">
+            <a href="{{ route('help.index') }}" class="flex items-center justify-between px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
+                <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.125-.904.47-.904.733V15m-6.564-1.154L14.44 17.55l2.156-2.156m-4.288-5.788l-2.156 2.156m-4.288-5.788l-2.156 2.156M12 6v.01M12 18v.01"></path>
+                    </svg>
+                    {{ __('Seek help here') }}
+                </div>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
     </div>
 </div>
 

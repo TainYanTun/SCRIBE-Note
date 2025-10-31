@@ -60,6 +60,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/notes/{note}/export', [NoteController::class, 'export'])->name('notes.export');
     Route::get('/graph', [GraphController::class, 'index'])->name('graph.index');
 
+    Route::get('/help', [App\Http\Controllers\HelpController::class, 'index'])->name('help.index');
+
     Route::get('/folders/{folder?}', [FolderController::class, 'index'])->name('folders.index');
     Route::resource('folders', FolderController::class)->only(['store', 'update', 'destroy']);
 });
