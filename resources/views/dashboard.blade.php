@@ -294,15 +294,15 @@
 
                                 @else
 
-                                    <div class="divide-y divide-gray-800/50">
+                                                                    <div class="divide-y divide-gray-800/50">
 
-                                        @foreach ($allTags as $tag)
+                                                                            @foreach ($allTags->take(7) as $tag)
 
-                                            <a href="{{ route('tags.show', $tag) }}" class="flex items-center gap-4 px-6 py-4 hover:bg-[#2a2a2a] transition-colors group">
+                                                                                <a href="{{ route('tags.show', $tag) }}" class="flex items-center gap-4 px-6 py-4 hover:bg-[#2a2a2a] transition-colors group">
 
-                                                <div class="flex-1 min-w-0">
+                                                                                    <div class="flex-1 min-w-0">
 
-                                                    <h4 class="text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">#{{ $tag->name }}</h4>
+                                                                                        <h4 class="text-sm font-medium text-gray-200 group-hover:text-white transition-colors truncate">#{{ $tag->name }}</h4>
 
                                                 </div>
 

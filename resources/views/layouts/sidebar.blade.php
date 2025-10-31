@@ -10,6 +10,9 @@
     $totalNotes = $notesQuery->count();
     $notes = $notesQuery->latest()->take(12)->get();
     $unreadNotificationsCount = auth()->user()->unreadNotifications->count();
+    $specialTags = App\Models\Tag::whereIn('name', ['favorite', 'important', 'todo'])
+                                 ->where('user_id', auth()->id())
+                                 ->get();
 @endphp
 
 <div class="flex flex-col h-full bg-[#1d1d1d] border-r border-gray-800">
@@ -107,6 +110,21 @@
             {{ __('Create Note') }}
         </a>
 
+        <!-- Special Tags List -->
+        <div class="space-y-0.5 mb-6">
+            <div class="text-xs text-gray-500 uppercase tracking-wider px-2 py-1.5 font-semibold">
+                Special Tags
+            </div>
+            @foreach ($specialTags as $tag)
+                <a href="{{ route('tags.show', $tag) }}" class="flex items-center px-2 py-1.5 text-sm text-gray-300 hover:bg-white/5 rounded-md transition-colors duration-150">
+                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                    {{ $tag->name }}
+                </a>
+            @endforeach
+        </div>
+
         <!-- Notes List -->
         <div class="space-y-0.5 flex-grow min-h-0 flex flex-col">
             <div class="text-xs text-gray-500 uppercase tracking-wider px-2 py-1.5 font-semibold">
@@ -138,6 +156,15 @@
                                     <button type="submit" class="p-1 rounded-md hover:bg-white/10 transition-colors">
                                         <svg class="w-3.5 h-3.5 {{ $note->tags->contains('name', 'important') ? 'text-red-500' : 'text-gray-500' }}" fill="{{ $note->tags->contains('name', 'important') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                                <form action="{{ route('notes.toggleTag', $note) }}" method="POST" class="toggle-tag-form">
+                                    @csrf
+                                    <input type="hidden" name="tag" value="todo">
+                                    <button type="submit" class="p-1 rounded-md hover:bg-white/10 transition-colors">
+                                        <svg class="w-3.5 h-3.5 {{ $note->tags->contains('name', 'todo') ? 'text-blue-500' : 'text-gray-500' }}" fill="{{ $note->tags->contains('name', 'todo') ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </button>
                                 </form>

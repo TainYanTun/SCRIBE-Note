@@ -251,7 +251,10 @@ class NoteController extends Controller
 
         $tagName = $validated['tag'];
 
-        $tag = Tag::firstOrCreate(['name' => $tagName, 'slug' => Str::slug($tagName)]);
+                $tag = Tag::firstOrCreate(
+            ['name' => $tagName, 'user_id' => auth()->id()],
+            ['slug' => Str::slug($tagName)]
+        );
 
         $note->tags()->toggle($tag);
 

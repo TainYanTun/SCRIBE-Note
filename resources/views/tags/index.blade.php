@@ -40,6 +40,11 @@
                                 <p class="text-xs text-gray-600 mt-0.5">
                                     {{ $tag->notes_count ?? 0 }} {{ Str::plural('note', $tag->notes_count ?? 0) }}
                                 </p>
+                                @if($tag->description)
+                                <p class="text-xs text-gray-300 mt-1">
+                                    {{ $tag->description }}
+                                </p>
+                                @endif
                             </div>
                         </a>
                         
