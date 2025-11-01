@@ -9,7 +9,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-[#252525] overflow-hidden shadow-sm sm:rounded-lg border border-gray-800/50">
                 <div class="p-8">
-                    <form method="POST" action="{{ route('notes.update', $note) }}" class="space-y-6">
+                    <form method="POST" action="{{ route('notes.update', $note) }}" class="space-y-6" id="note-form">
                         @csrf
                         @method('patch')
 
@@ -120,11 +120,8 @@
                         <!-- Content -->
                         <div>
                             <x-input-label for="content" :value="__('Content')" class="text-gray-400 text-sm font-medium mb-2" />
-                            <textarea 
-                                id="easymde-editor" 
-                                name="content" 
-                                class="block w-full bg-[#2c2c2c] border-transparent text-gray-100 placeholder-gray-600 focus:bg-[#323232] focus:ring-1 focus:ring-gray-600 focus:border-transparent rounded-lg shadow-sm transition-colors"
-                            >{{ old('content', $note->content) }}</textarea>
+                            <div id="editor" style="height: 300px; background-color: #2c2c2c; color: #e3e3e3; border-radius: 0.5rem; border: 1px solid transparent;"></div>
+                            <textarea name="content" id="content-textarea" style="display: none;">{{ old('content', $note->content) }}</textarea>
                             <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
 
@@ -143,253 +140,66 @@
         </div>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var easymde = new EasyMDE({
-            element: document.getElementById('easymde-editor'),
-            spellChecker: false,
-            
-            // Enable preview
-            previewRender: function(plainText) {
-                return this.parent.markdown(plainText);
-            },
-            
-            // Toolbar configuration
-            toolbar: [
-                "bold", "italic", "heading", "|",
-                "quote", "unordered-list", "ordered-list", "|",
-                "link", "image", "|",
-                "preview", "side-by-side", "fullscreen", "|",
-                "guide"
-            ],
-            
-            // Enable rendering features
-            renderingConfig: {
-                singleLineBreaks: false,
-                codeSyntaxHighlighting: true,
-            },
-            
-            // Status bar
-            status: ['lines', 'words', 'cursor'],
-            
-            // Auto-save (optional)
-            autosave: {
-                enabled: false
+    @push('scripts')
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var quill = new Quill('#editor', {
+                theme: 'snow',
+                placeholder: 'Start writing...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                        ['blockquote', 'code-block'],
+
+                        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                        [{ 'direction': 'rtl' }],                         // text direction
+
+                        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+                        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                        [{ 'font': [] }],
+                        [{ 'align': [] }],
+
+                        ['clean']                                         // remove formatting button
+                    ]
+                }
+            });
+
+            var form = document.getElementById('note-form');
+            form.onsubmit = function() {
+                var contentTextarea = document.getElementById('content-textarea');
+                contentTextarea.value = quill.root.innerHTML;
+            };
+
+            // Load existing content (HTML directly into Quill)
+            var existingHtmlContent = document.getElementById('content-textarea').value;
+            if (existingHtmlContent) {
+                quill.clipboard.dangerouslyPasteHTML(existingHtmlContent);
+            }
+
+        });
+    </script>
+    <div id="version-error-data" data-has-error="{{ json_encode($errors->has('version')) }}"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Disable save button if optimistic locking error is present
+            const saveButton = document.getElementById('save-changes-button');
+            const versionErrorDataElement = document.getElementById('version-error-data');
+            const hasVersionError = versionErrorDataElement ? JSON.parse(versionErrorDataElement.dataset.hasError) : false;
+
+            if (hasVersionError) {
+                if (saveButton) {
+                    saveButton.disabled = true;
+                    saveButton.classList.add('opacity-50', 'cursor-not-allowed');
+                }
             }
         });
-
-        // Disable save button if optimistic locking error is present
-        const saveButton = document.getElementById('save-changes-button');
-        @if($errors->has('version'))
-            if (saveButton) {
-                saveButton.disabled = true;
-                saveButton.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-        @endif
-    });
-</script>
-
-<style>
-    /* EasyMDE Dark Mode Styling */
-    .EasyMDEContainer .CodeMirror {
-        background-color: #2c2c2c;
-        color: #e5e5e5;
-        border: none;
-        border-radius: 0.5rem;
-        padding: 0.5rem;
-        min-height: 300px;
-    }
-    
-    .EasyMDEContainer .CodeMirror-cursor {
-        border-left-color: #e5e5e5;
-    }
-    
-    .EasyMDEContainer .CodeMirror-selected {
-        background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .EasyMDEContainer .CodeMirror-line::selection,
-    .EasyMDEContainer .CodeMirror-line > span::selection,
-    .EasyMDEContainer .CodeMirror-line > span > span::selection {
-        background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .editor-toolbar {
-        background-color: #252525;
-        border: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 0.5rem 0.5rem 0 0;
-        opacity: 1;
-    }
-    
-    .editor-toolbar button {
-        color: #9ca3af !important;
-        border: none !important;
-    }
-    
-    .editor-toolbar button:hover,
-    .editor-toolbar button.active {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: #e5e5e5 !important;
-        border: none !important;
-    }
-    
-    .editor-toolbar i.separator {
-        border-left: 1px solid rgba(255, 255, 255, 0.05);
-        border-right: none;
-    }
-    
-    .editor-statusbar {
-        color: #6b7280;
-        background-color: #252525;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 0 0 0.5rem 0.5rem;
-    }
-    
-    /* Preview Styling */
-    .editor-preview,
-    .editor-preview-side {
-        background-color: #2c2c2c;
-        color: #e5e5e5;
-        padding: 1rem;
-    }
-    
-    /* Headers in preview */
-    .editor-preview h1,
-    .editor-preview-side h1 {
-        font-size: 2em;
-        font-weight: bold;
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-        color: #f3f4f6;
-        border-bottom: 2px solid #4b5563;
-        padding-bottom: 0.3em;
-    }
-    
-    .editor-preview h2,
-    .editor-preview-side h2 {
-        font-size: 1.5em;
-        font-weight: bold;
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-        color: #f3f4f6;
-        border-bottom: 1px solid #4b5563;
-        padding-bottom: 0.3em;
-    }
-    
-    .editor-preview h3,
-    .editor-preview-side h3 {
-        font-size: 1.25em;
-        font-weight: bold;
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-        color: #f3f4f6;
-    }
-    
-    .editor-preview h4,
-    .editor-preview-side h4,
-    .editor-preview h5,
-    .editor-preview-side h5,
-    .editor-preview h6,
-    .editor-preview-side h6 {
-        font-weight: bold;
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-        color: #f3f4f6;
-    }
-    
-    /* Lists in preview */
-    .editor-preview ul,
-    .editor-preview-side ul,
-    .editor-preview ol,
-    .editor-preview-side ol {
-        margin-left: 1.5em;
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
-    
-    .editor-preview ul {
-        list-style-type: disc;
-    }
-    
-    .editor-preview ol {
-        list-style-type: decimal;
-    }
-    
-    .editor-preview li,
-    .editor-preview-side li {
-        margin-bottom: 0.25em;
-        line-height: 1.6;
-    }
-    
-    /* Links in preview */
-    .editor-preview a,
-    .editor-preview-side a {
-        color: #60a5fa;
-        text-decoration: none;
-        border-bottom: 1px solid #60a5fa;
-    }
-    
-    .editor-preview a:hover,
-    .editor-preview-side a:hover {
-        color: #93c5fd;
-        border-bottom-color: #93c5fd;
-    }
-    
-    /* Images in preview */
-    .editor-preview img,
-    .editor-preview-side img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 0.5rem;
-        margin: 1em 0;
-        border: 1px solid #4b5563;
-    }
-    
-    /* Paragraphs in preview */
-    .editor-preview p,
-    .editor-preview-side p {
-        margin-bottom: 1em;
-        line-height: 1.6;
-    }
-    
-    /* Blockquotes in preview */
-    .editor-preview blockquote,
-    .editor-preview-side blockquote {
-        border-left: 4px solid #4b5563;
-        padding-left: 1em;
-        margin-left: 0;
-        color: #9ca3af;
-        font-style: italic;
-    }
-    
-    /* Code blocks in preview */
-    .editor-preview code,
-    .editor-preview-side code {
-        background-color: #1f2937;
-        padding: 0.2em 0.4em;
-        border-radius: 0.25rem;
-        font-family: monospace;
-        font-size: 0.9em;
-    }
-    
-    .editor-preview pre,
-    .editor-preview-side pre {
-        background-color: #1f2937;
-        padding: 1em;
-        border-radius: 0.5rem;
-        overflow-x: auto;
-        margin: 1em 0;
-    }
-    
-    .editor-preview pre code,
-    .editor-preview-side pre code {
-        background-color: transparent;
-        padding: 0;
-    }
-    
-    .CodeMirror-scroll {
-        min-height: 300px;
-    }
-</style>
+    </script>
+    @endpush
 </x-app-layout>

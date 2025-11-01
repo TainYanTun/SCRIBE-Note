@@ -21,7 +21,7 @@
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <span>{{ $note->updated_at->diffForHumans() }}</span>
+                            <span>Created {{ $note->created_at->format('M d, Y') }}</span>
                         </div>
                     </div>
                     
@@ -177,22 +177,6 @@
             </div>
         </div>
     </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const markdownContent = `{!! addslashes($note->content) !!}`;
-        
-        // Configure marked.js options for better rendering
-        marked.setOptions({
-            breaks: true,
-            gfm: true,
-            headerIds: true,
-            mangle: false
-        });
-        
-        document.getElementById('markdown-output').innerHTML = marked.parse(markdownContent);
-    });
-</script>
 
 <style>
     /* Markdown Content Styling */
@@ -433,4 +417,14 @@
     }
     
 </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var markdownContent = `{!! $note->content !!}`;
+            var markdownOutput = document.getElementById('markdown-output');
+            if (markdownContent && markdownOutput) {
+                markdownOutput.innerHTML = marked.parse(markdownContent);
+            }
+        });
+    </script>
 </x-app-layout>

@@ -9,7 +9,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-[#252525] overflow-hidden shadow-sm sm:rounded-lg border border-gray-800/50">
                 <div class="p-8">
-                    <form method="POST" action="{{ route('notes.store') }}" class="space-y-6">
+                    <form method="POST" action="{{ route('notes.store') }}" class="space-y-6" id="note-form">
                         @csrf
 
                         <!-- Title -->
@@ -102,13 +102,8 @@
                         <!-- Content -->
                         <div>
                             <x-input-label for="content" :value="__('Content')" class="text-gray-400 text-sm font-medium mb-2" />
-                            <textarea 
-                                id="easymde-editor" 
-                                name="content" 
-                                rows="12"
-                                class="block w-full bg-[#2c2c2c] border-transparent text-gray-100 placeholder-gray-600 focus:bg-[#323232] focus:ring-1 focus:ring-gray-600 focus:border-transparent rounded-lg shadow-sm transition-colors resize-none" 
-                                placeholder="Start writing..."
-                            >{{ old('content') }}</textarea>
+                            <div id="editor" style="height: 300px; background-color: #2c2c2c; color: #e3e3e3; border-radius: 0.5rem; border: 1px solid transparent;"></div>
+                            <textarea name="content" id="content-textarea" style="display: none;">{{ old('content') }}</textarea>
                             <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
 
@@ -127,13 +122,49 @@
         </div>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var easymde = new EasyMDE({
-            element: document.getElementById('easymde-editor'),
-            spellChecker: false, // Optional: disable spell checker
-            // Add other EasyMDE options here if needed
+    @push('scripts')
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var quill = new Quill('#editor', {
+                theme: 'snow',
+                placeholder: 'Start writing...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+                        ['blockquote', 'code-block'],
+
+                        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                        [{ 'direction': 'rtl' }],                         // text direction
+
+                        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+                        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+                        [{ 'font': [] }],
+                        [{ 'align': [] }],
+
+                        ['clean']                                         // remove formatting button
+                    ]
+                }
+            });
+
+            var form = document.getElementById('note-form');
+            form.onsubmit = function() {
+                var contentTextarea = document.getElementById('content-textarea');
+                contentTextarea.value = quill.root.innerHTML;
+            };
+
+            // Set initial content if available (for old('content'))
+            var oldContent = document.getElementById('content-textarea').value;
+            if (oldContent) {
+                quill.root.innerHTML = oldContent;
+            }
         });
-    });
-</script>
+    </script>
+    @endpush
 </x-app-layout>
