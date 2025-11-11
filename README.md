@@ -1,3 +1,4 @@
+<h1 align="center">SCRIBE-NOTE: WEB APP FINAL PROJECT</h1>
 <p align="center">
   <a href="#" target="_blank">
     <img src="public/icon.svg" width="200" height="200" alt="Scribe Logo">
